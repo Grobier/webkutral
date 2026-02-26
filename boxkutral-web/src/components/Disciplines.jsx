@@ -65,7 +65,7 @@ const disciplines = [
       'Equilibrio entre estética y rendimiento',
     ],
     idealFor: 'Quienes buscan verse bien y ser fuertes al mismo tiempo.',
-    duration: '75 min',
+    duration: '60 min',
     intensity: 'Media-Alta',
   },
   {
@@ -85,7 +85,7 @@ const disciplines = [
       'Aumento de la resistencia muscular',
     ],
     idealFor: 'Personas que quieren tonificar y fortalecer glúteos, abdomen y piernas.',
-    duration: '45 min',
+    duration: '60 min',
     intensity: 'Media',
   },
   {
@@ -105,7 +105,7 @@ const disciplines = [
       'Aumenta la resistencia general',
     ],
     idealFor: 'Quienes buscan mejorar su condición física general y salud del corazón.',
-    duration: '50 min',
+    duration: '60 min',
     intensity: 'Media',
   },
 ]
