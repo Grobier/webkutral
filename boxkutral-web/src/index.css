@@ -1,0 +1,348 @@
+@import "tailwindcss";
+
+/* ========================================
+   BoxKutral - Centro de Entrenamiento
+   Theme Configuration
+   ======================================== */
+
+@theme {
+  /* Core Colors */
+  --color-primary: #FFFFFF;
+  --color-secondary: #0A0A0A;
+  --color-dark: #0A0A0A;
+
+  /* Fire Accent Colors */
+  --color-fire-orange: #FF6B00;
+  --color-fire-red: #C0392B;
+  --color-dark-red: #1a0505;
+
+  /* Discipline Colors */
+  --color-crossfit: #FF6B00;
+  --color-halterofilia: #F0B400;
+  --color-powerbuilding: #9B59B6;
+  --color-gap: #2ECC71;
+  --color-endurance: #00BCD4;
+
+  /* Typography */
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+
+/* ========================================
+   Typography
+   ======================================== */
+
+.font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* ========================================
+   Gradient Backgrounds
+   ======================================== */
+
+.gradient-hero {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary) 0%,
+    var(--color-secondary) 60%,
+    var(--color-dark-red) 100%
+  );
+}
+
+.gradient-cta {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary) 0%,
+    var(--color-dark-red) 60%,
+    var(--color-fire-red) 100%
+  );
+}
+
+.gradient-fire-text {
+  background: linear-gradient(135deg, var(--color-fire-orange), var(--color-fire-red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================================
+   Fire Separator
+   ======================================== */
+
+.fire-separator {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-fire-orange) 20%,
+    var(--color-fire-red) 50%,
+    var(--color-fire-orange) 80%,
+    transparent 100%
+  );
+}
+
+/* ========================================
+   Button Styles
+   ======================================== */
+
+.btn-fire {
+  background: linear-gradient(135deg, var(--color-fire-orange), var(--color-fire-red));
+  padding: 1rem 2rem;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.btn-fire:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 107, 0, 0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--color-fire-orange);
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  color: var(--color-fire-orange);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.btn-outline:hover {
+  background: var(--color-fire-orange);
+  color: white;
+}
+
+/* ========================================
+   Ember Particles Animation
+   ======================================== */
+
+.ember-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ember {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--color-fire-orange);
+  border-radius: 50%;
+  opacity: 0;
+  animation: ember-rise 4s ease-out infinite;
+}
+
+.ember::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: radial-gradient(circle, var(--color-fire-orange) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+@keyframes ember-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100vh) scale(0.3);
+  }
+}
+
+.ember:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 4s; }
+.ember:nth-child(2) { left: 20%; animation-delay: 0.5s; animation-duration: 4.5s; }
+.ember:nth-child(3) { left: 30%; animation-delay: 1s; animation-duration: 3.5s; }
+.ember:nth-child(4) { left: 40%; animation-delay: 1.5s; animation-duration: 5s; }
+.ember:nth-child(5) { left: 50%; animation-delay: 2s; animation-duration: 4s; }
+.ember:nth-child(6) { left: 60%; animation-delay: 0.3s; animation-duration: 4.2s; }
+.ember:nth-child(7) { left: 70%; animation-delay: 0.8s; animation-duration: 3.8s; }
+.ember:nth-child(8) { left: 80%; animation-delay: 1.3s; animation-duration: 4.6s; }
+.ember:nth-child(9) { left: 90%; animation-delay: 1.8s; animation-duration: 3.6s; }
+.ember:nth-child(10) { left: 15%; animation-delay: 2.3s; animation-duration: 4.3s; }
+.ember:nth-child(11) { left: 25%; animation-delay: 2.8s; animation-duration: 3.9s; }
+.ember:nth-child(12) { left: 35%; animation-delay: 0.2s; animation-duration: 4.7s; }
+.ember:nth-child(13) { left: 45%; animation-delay: 0.7s; animation-duration: 4.1s; }
+.ember:nth-child(14) { left: 55%; animation-delay: 1.2s; animation-duration: 3.7s; }
+.ember:nth-child(15) { left: 65%; animation-delay: 1.7s; animation-duration: 4.4s; }
+
+/* ========================================
+   Discipline Card Styles
+   ======================================== */
+
+.discipline-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.discipline-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   Schedule Grid
+   ======================================== */
+
+.schedule-slot {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.schedule-slot.active {
+  color: white;
+}
+
+.schedule-slot.inactive {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   Plan Cards
+   ======================================== */
+
+.plan-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.plan-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+}
+
+.plan-card.featured {
+  border-color: var(--color-fire-orange);
+  box-shadow: 0 0 40px rgba(255, 107, 0, 0.15);
+  position: relative;
+}
+
+/* ========================================
+   Scrollbar
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-fire-orange);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fire-red);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(255, 107, 0, 0.6); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ========================================
+   Tab Styles
+   ======================================== */
+
+.tab-button {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  border: 2px solid transparent;
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.tab-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--color-secondary);
+}
+
+.tab-button.active {
+  color: var(--color-secondary);
+  border-color: currentColor;
+}
