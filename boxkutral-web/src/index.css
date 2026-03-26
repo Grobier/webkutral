@@ -250,8 +250,9 @@ body {
 }
 
 .schedule-slot.inactive {
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.3);
+  background: rgba(10, 10, 10, 0.06);
+  color: rgba(10, 10, 10, 0.42);
+  border: 1px dashed rgba(10, 10, 10, 0.08);
 }
 
 /* ========================================
@@ -333,16 +334,52 @@ body {
   transition: all 0.3s ease;
   white-space: nowrap;
   border: 2px solid transparent;
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.6);
+  background: rgba(10, 10, 10, 0.05);
+  color: rgba(10, 10, 10, 0.72);
 }
 
 .tab-button:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(10, 10, 10, 0.08);
   color: var(--color-secondary);
 }
 
 .tab-button.active {
   color: var(--color-secondary);
   border-color: currentColor;
+  background: rgba(10, 10, 10, 0.03);
+  box-shadow: 0 12px 30px rgba(10, 10, 10, 0.08);
+}
+
+/* ========================================
+   Accessibility: Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .ember {
+    animation: none;
+    opacity: 0;
+  }
+
+  .animate-float {
+    animation: none;
+  }
+
+  .animate-pulse-glow {
+    animation: none;
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.3);
+  }
+
+  .btn-fire:hover,
+  .btn-outline:hover {
+    transform: none;
+  }
+
+  .discipline-card:hover,
+  .plan-card:hover {
+    transform: none;
+  }
 }

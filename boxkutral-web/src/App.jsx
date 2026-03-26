@@ -6,50 +6,81 @@
  * Disciplines: Crossfit, Halterofilia, Powerbuilding, GAP 2.0, Endurance
  */
 
-import {
-  Navbar,
-  Hero,
-  Disciplines,
-  Coaches,
-  Schedules,
-  Plans,
-  Testimonials,
-  FinalCTA,
-  Footer,
-} from './components'
+import { lazy, Suspense } from 'react'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import FloatingWhatsApp from './components/FloatingWhatsApp'
+
+// Below-fold sections: lazy loaded for faster initial paint
+const Disciplines = lazy(() => import('./components/Disciplines'))
+const Coaches = lazy(() => import('./components/Coaches'))
+const Schedules = lazy(() => import('./components/Schedules'))
+const Plans = lazy(() => import('./components/Plans'))
+const Testimonials = lazy(() => import('./components/Testimonials'))
+const FinalCTA = lazy(() => import('./components/FinalCTA'))
+const Footer = lazy(() => import('./components/Footer'))
+
+function SectionFallback() {
+  return <div className="min-h-96 bg-secondary" aria-hidden="true" />
+}
 
 function App() {
   return (
     <div className="min-h-screen bg-secondary">
+      {/* Skip to content — accesibilidad de teclado */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-fire-orange focus:px-4 focus:py-2 focus:font-bold focus:text-white"
+      >
+        Saltar al contenido
+      </a>
+
       {/* Navigation */}
       <Navbar />
 
       {/* Main Content */}
-      <main>
+      <main id="main-content">
         {/* Hero Section - Fullscreen with ember particles */}
         <Hero />
 
         {/* Disciplines Section - 5 training disciplines with modals */}
-        <Disciplines />
+        <Suspense fallback={<SectionFallback />}>
+          <Disciplines />
+        </Suspense>
 
         {/* Coaches Section - Team with photos and videos */}
-        <Coaches />
+        <Suspense fallback={<SectionFallback />}>
+          <Coaches />
+        </Suspense>
 
         {/* Schedules Section - Tab-based schedule grid */}
-        <Schedules />
+        <Suspense fallback={<SectionFallback />}>
+          <Schedules />
+        </Suspense>
 
         {/* Plans Section - Pricing cards */}
-        <Plans />
+        <Suspense fallback={<SectionFallback />}>
+          <Plans />
+        </Suspense>
 
         {/* Testimonials Section - Client success stories */}
-        <Testimonials />
+        <Suspense fallback={<SectionFallback />}>
+          <Testimonials />
+        </Suspense>
 
         {/* Final CTA Section - WhatsApp contact */}
-        <FinalCTA />
+        <Suspense fallback={<SectionFallback />}>
+          <FinalCTA />
+        </Suspense>
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
+
+      {/* Floating WhatsApp CTA */}
+      <FloatingWhatsApp />
     </div>
   )
 }

@@ -1,36 +1,30 @@
 import { WHATSAPP_LINK, INSTAGRAM_LINK, PHONE_DISPLAY } from '../constants'
 
-/**
- * Footer Component
- * Black background with social links and copyright
- */
-
-const disciplines = ['Crossfit', 'Halterofilia', 'Powerbuilding', 'GAP 2.0', 'Endurance']
+const disciplines = ['CrossFit', 'Halterofilia', 'Powerbuilding', 'GAP 2.0', 'Endurance']
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary border-t border-primary/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Logo & Description */}
-          <div className="lg:col-span-2 space-y-4">
-            {/* Logo - Replace with <img src="./logo.png" alt="BoxKutral" /> when ready */}
-            <a href="#" className="inline-block">
-              <span className="font-heading text-3xl tracking-wider text-primary">
-                BOXKUTRAL
-              </span>
+    <footer className="border-t border-primary/10 bg-secondary">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-4 lg:col-span-2">
+            <a href="#" className="inline-flex" aria-label="Ir al inicio">
+              <img
+                src="/brand/Kutral Espalda.png"
+                alt="Kutral"
+                className="h-12 w-auto object-contain sm:h-14"
+              />
             </a>
-            <p className="text-primary/50 text-sm max-w-md">
-              Centro de Entrenamiento de Alto Rendimiento. Enciende tu potencial
-              y entrena con propósito.
+            <p className="max-w-md text-sm text-primary/50">
+              Centro de Entrenamiento de Alto Rendimiento. Enciende tu potencial y entrena con
+              propósito.
             </p>
-            {/* Social Links */}
             <div className="flex gap-4 pt-4">
               <a
                 href={INSTAGRAM_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center rounded-full border border-primary/20 text-primary/60 hover:border-fire-orange hover:text-fire-orange transition-all duration-300"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 text-primary/60 transition-all duration-300 hover:border-fire-orange hover:text-fire-orange"
                 aria-label="Instagram"
               >
                 <InstagramIcon />
@@ -39,7 +33,7 @@ export default function Footer() {
                 href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center rounded-full border border-primary/20 text-primary/60 hover:border-fire-orange hover:text-fire-orange transition-all duration-300"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 text-primary/60 transition-all duration-300 hover:border-fire-orange hover:text-fire-orange"
                 aria-label="WhatsApp"
               >
                 <WhatsAppIcon />
@@ -47,15 +41,14 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Disciplines */}
           <div>
-            <h4 className="font-heading text-lg text-primary mb-4">DISCIPLINAS</h4>
+            <h4 className="mb-4 font-heading text-lg text-primary">DISCIPLINAS</h4>
             <ul className="space-y-2">
               {disciplines.map((discipline) => (
                 <li key={discipline}>
                   <a
                     href="#disciplinas"
-                    className="text-primary/50 hover:text-fire-orange transition-colors text-sm"
+                    className="text-sm text-primary/50 transition-colors hover:text-fire-orange"
                   >
                     {discipline}
                   </a>
@@ -64,18 +57,17 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
-            <h4 className="font-heading text-lg text-primary mb-4">CONTACTO</h4>
+            <h4 className="mb-4 font-heading text-lg text-primary">CONTACTO</h4>
             <ul className="space-y-3 text-sm">
               <li>
                 <a
                   href={INSTAGRAM_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary/50 hover:text-fire-orange transition-colors flex items-center gap-2"
+                  className="flex items-center gap-2 text-primary/50 transition-colors hover:text-fire-orange"
                 >
-                  <InstagramIcon className="w-4 h-4" />
+                  <InstagramIcon className="h-4 w-4" />
                   @boxkutral
                 </a>
               </li>
@@ -84,13 +76,13 @@ export default function Footer() {
                   href={WHATSAPP_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary/50 hover:text-fire-orange transition-colors flex items-center gap-2"
+                  className="flex items-center gap-2 text-primary/50 transition-colors hover:text-fire-orange"
                 >
-                  <WhatsAppIcon className="w-4 h-4" />
+                  <WhatsAppIcon className="h-4 w-4" />
                   {PHONE_DISPLAY}
                 </a>
               </li>
-              <li className="text-primary/50 flex items-center gap-2">
+              <li className="flex items-center gap-2 text-primary/50">
                 <LocationIcon />
                 Santiago, Chile
               </li>
@@ -98,22 +90,21 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-primary/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-primary/40 text-sm text-center sm:text-left">
-            © 2025 BoxKutral. Centro de Entrenamiento de Alto Rendimiento. Santiago, Chile.
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-primary/10 pt-8 sm:flex-row">
+          <p className="text-center text-sm text-primary/40 sm:text-left">
+            © {new Date().getFullYear()} BoxKutral. Centro de Entrenamiento de Alto Rendimiento. Santiago, Chile.
           </p>
-          <div className="flex items-center gap-6 text-primary/30 text-xs">
-            <a href="#disciplinas" className="hover:text-fire-orange transition-colors">
+          <div className="flex items-center gap-6 text-xs text-primary/30">
+            <a href="#disciplinas" className="transition-colors hover:text-fire-orange">
               Disciplinas
             </a>
-            <a href="#profesores" className="hover:text-fire-orange transition-colors">
+            <a href="#profesores" className="transition-colors hover:text-fire-orange">
               Coaches
             </a>
-            <a href="#horarios" className="hover:text-fire-orange transition-colors">
+            <a href="#horarios" className="transition-colors hover:text-fire-orange">
               Horarios
             </a>
-            <a href="#planes" className="hover:text-fire-orange transition-colors">
+            <a href="#planes" className="transition-colors hover:text-fire-orange">
               Planes
             </a>
           </div>
@@ -141,7 +132,7 @@ function WhatsAppIcon({ className = 'w-5 h-5' }) {
 
 function LocationIcon() {
   return (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
     </svg>

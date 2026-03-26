@@ -1,11 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
-
-/**
- * Disciplines Component
- * 5 discipline cards with click-to-open modal for detailed info
- * Clean grid layout with icons
- */
+import { containerVariants, cardVariants } from '../utils/animations'
 
 const disciplines = [
   {
@@ -14,7 +9,7 @@ const disciplines = [
     shortDesc: 'El atleta completo. Equilibrio alto entre fuerza, resistencia y potencia.',
     color: '#FF6B00',
     icon: 'crossfit',
-    fullDescription: `Crossfit es un programa de entrenamiento de alta intensidad que combina elementos de cardio,
+    fullDescription: `CrossFit es un programa de entrenamiento de alta intensidad que combina elementos de cardio,
     levantamiento de pesas, gimnasia y más. Cada día es diferente, con WODs (Workout of the Day) que desafían
     tu cuerpo de formas nuevas y emocionantes.`,
     benefits: [
@@ -34,8 +29,8 @@ const disciplines = [
     shortDesc: 'Potencia pura y técnica. Ideal para fuerza explosiva y coordinación.',
     color: '#F0B400',
     icon: 'weightlifting',
-    fullDescription: `La Halterofilia o levantamiento olímpico se centra en dos movimientos principales:
-    el Snatch (arranque) y el Clean & Jerk (envión). Es un deporte que requiere técnica precisa,
+    fullDescription: `La halterofilia o levantamiento olímpico se centra en dos movimientos principales:
+    el snatch (arranque) y el clean & jerk (envión). Es un deporte que requiere técnica precisa,
     fuerza explosiva y movilidad excepcional.`,
     benefits: [
       'Desarrolla fuerza explosiva máxima',
@@ -55,7 +50,7 @@ const disciplines = [
     color: '#9B59B6',
     icon: 'muscle',
     fullDescription: `Powerbuilding combina lo mejor del powerlifting (fuerza máxima) con el bodybuilding
-    (hipertrofia y estética). El objetivo es construir un físico fuerte Y visualmente impresionante,
+    (hipertrofia y estética). El objetivo es construir un físico fuerte y visualmente impresionante,
     sin sacrificar ninguno de los dos aspectos.`,
     benefits: [
       'Ganancias de fuerza y masa muscular',
@@ -71,11 +66,11 @@ const disciplines = [
   {
     id: 'gap',
     name: 'GAP 2.0',
-    shortDesc: 'Tono localizado. Enfoque en Glúteos, Abdomen y Piernas.',
+    shortDesc: 'Tono localizado. Enfoque en glúteos, abdomen y piernas.',
     color: '#2ECC71',
     icon: 'target',
     fullDescription: `GAP 2.0 es un programa de entrenamiento focalizado en las zonas más demandadas:
-    Glúteos, Abdomen y Piernas. Combina ejercicios de fuerza, resistencia y tonificación para
+    glúteos, abdomen y piernas. Combina ejercicios de fuerza, resistencia y tonificación para
     esculpir y fortalecer estas áreas específicas.`,
     benefits: [
       'Tonificación muscular localizada',
@@ -110,7 +105,6 @@ const disciplines = [
   },
 ]
 
-// Icon components for each discipline
 function DisciplineIcon({ type, className = 'w-8 h-8' }) {
   const icons = {
     crossfit: (
@@ -120,7 +114,7 @@ function DisciplineIcon({ type, className = 'w-8 h-8' }) {
     ),
     weightlifting: (
       <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-        <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
+        <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z" />
       </svg>
     ),
     muscle: (
@@ -144,67 +138,80 @@ function DisciplineIcon({ type, className = 'w-8 h-8' }) {
   return icons[type] || icons.crossfit
 }
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-}
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' },
-  },
-}
-
-// Modal Component
 function DisciplineModal({ discipline, isOpen, onClose }) {
+  const closeButtonRef = useRef(null)
+  const modalRef = useRef(null)
+
+  useEffect(() => {
+    if (!isOpen) return
+    closeButtonRef.current?.focus()
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus() }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus() }
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
   if (!discipline) return null
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
           />
 
-          {/* Modal */}
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="discipline-modal-title"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-4 md:inset-10 lg:inset-20 bg-secondary border border-primary/10 rounded-2xl z-50 overflow-hidden flex flex-col"
+            className="fixed inset-4 z-50 flex flex-col overflow-hidden rounded-2xl border border-primary/10 bg-secondary md:inset-10 lg:inset-20"
           >
-            {/* Header */}
             <div
-              className="p-6 md:p-8 border-b border-primary/10"
+              className="border-b border-primary/10 p-6 md:p-8"
               style={{ borderBottomColor: `${discipline.color}30` }}
             >
               <div className="flex items-start justify-between">
                 <div>
                   <h2
+                    id="discipline-modal-title"
                     className="font-heading text-4xl md:text-5xl lg:text-6xl"
                     style={{ color: discipline.color }}
                   >
                     {discipline.name}
                   </h2>
-                  <div className="flex gap-4 mt-4 text-sm">
-                    <span className="px-3 py-1 rounded-full bg-primary/10 text-primary/70">
+                  <div className="mt-4 flex gap-4 text-sm">
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-primary/70">
                       {discipline.duration}
                     </span>
                     <span
-                      className="px-3 py-1 rounded-full"
+                      className="rounded-full px-3 py-1"
                       style={{ backgroundColor: `${discipline.color}20`, color: discipline.color }}
                     >
                       Intensidad: {discipline.intensity}
@@ -212,40 +219,39 @@ function DisciplineModal({ discipline, isOpen, onClose }) {
                   </div>
                 </div>
                 <button
+                  ref={closeButtonRef}
                   onClick={onClose}
-                  className="p-2 hover:bg-primary/10 rounded-lg transition-colors"
+                  className="rounded-lg p-2 transition-colors hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-fire-orange"
+                  aria-label="Cerrar disciplina"
                 >
-                  <svg className="w-6 h-6 text-primary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-6 w-6 text-primary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
             </div>
 
-            {/* Content */}
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              <div className="grid lg:grid-cols-2 gap-8">
-                {/* Left Column */}
+              <div className="grid gap-8 lg:grid-cols-2">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="font-heading text-2xl text-primary mb-3">Descripción</h3>
-                    <p className="text-primary/70 leading-relaxed">{discipline.fullDescription}</p>
+                    <h3 className="mb-3 font-heading text-2xl text-primary">Descripción</h3>
+                    <p className="leading-relaxed text-primary/70">{discipline.fullDescription}</p>
                   </div>
 
                   <div>
-                    <h3 className="font-heading text-2xl text-primary mb-3">Ideal para</h3>
-                    <p className="text-primary/70 leading-relaxed">{discipline.idealFor}</p>
+                    <h3 className="mb-3 font-heading text-2xl text-primary">Ideal para</h3>
+                    <p className="leading-relaxed text-primary/70">{discipline.idealFor}</p>
                   </div>
                 </div>
 
-                {/* Right Column - Benefits */}
                 <div>
-                  <h3 className="font-heading text-2xl text-primary mb-4">Beneficios</h3>
+                  <h3 className="mb-4 font-heading text-2xl text-primary">Beneficios</h3>
                   <ul className="space-y-3">
                     {discipline.benefits.map((benefit, idx) => (
                       <li key={idx} className="flex items-start gap-3">
                         <svg
-                          className="w-5 h-5 flex-shrink-0 mt-0.5"
+                          className="mt-0.5 h-5 w-5 shrink-0"
                           style={{ color: discipline.color }}
                           fill="currentColor"
                           viewBox="0 0 20 20"
@@ -264,15 +270,14 @@ function DisciplineModal({ discipline, isOpen, onClose }) {
               </div>
             </div>
 
-            {/* Footer */}
-            <div className="p-6 md:p-8 border-t border-primary/10 bg-primary/5">
+            <div className="border-t border-primary/10 bg-primary/5 p-6 md:p-8">
               <a
                 href="#horarios"
                 onClick={onClose}
                 className="btn-fire w-full md:w-auto"
-                style={{ background: `linear-gradient(135deg, ${discipline.color}, ${discipline.color}dd)` }}
+                style={{ background: `linear-gradient(135deg, ${discipline.color}, ${discipline.color}DD)` }}
               >
-                Ver Horarios de {discipline.name}
+                Ver horarios de {discipline.name}
               </a>
             </div>
           </motion.div>
@@ -288,37 +293,31 @@ export default function Disciplines() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="disciplinas" className="py-24 lg:py-32 bg-white relative">
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+    <section id="disciplinas" className="relative bg-white py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 lg:mb-20"
+          className="mb-16 text-center lg:mb-20"
         >
-          <span className="text-fire-orange text-sm font-semibold tracking-widest uppercase">
+          <span className="text-sm font-semibold uppercase tracking-widest text-fire-orange">
             Entrena con propósito
           </span>
-          <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-secondary mt-4">
+          <h2 className="mt-4 font-heading text-4xl text-secondary sm:text-5xl lg:text-6xl">
             NUESTRAS DISCIPLINAS
           </h2>
-          <p className="text-secondary/60 mt-4 text-lg">
-            Haz clic en cada disciplina para conocer más
-          </p>
+          <p className="mt-4 text-lg text-secondary/60">Haz clic en cada disciplina para conocer más</p>
         </motion.div>
 
-        {/* Disciplines Grid - All 5 cards in organized layout */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           className="space-y-5"
         >
-          {/* Top Row - 3 cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {disciplines.slice(0, 3).map((discipline) => (
               <DisciplineCard
                 key={discipline.id}
@@ -328,8 +327,7 @@ export default function Disciplines() {
             ))}
           </div>
 
-          {/* Bottom Row - 2 cards centered */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl lg:max-w-3xl mx-auto">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-5 sm:grid-cols-2 lg:max-w-3xl">
             {disciplines.slice(3).map((discipline) => (
               <DisciplineCard
                 key={discipline.id}
@@ -341,7 +339,6 @@ export default function Disciplines() {
         </motion.div>
       </div>
 
-      {/* Modal */}
       <DisciplineModal
         discipline={selectedDiscipline}
         isOpen={!!selectedDiscipline}
@@ -351,63 +348,51 @@ export default function Disciplines() {
   )
 }
 
-// Discipline Card Component
 function DisciplineCard({ discipline, onClick }) {
   return (
-    <motion.div
-      variants={cardVariants}
-      onClick={onClick}
-      className="group cursor-pointer"
-    >
+    <motion.div variants={cardVariants} onClick={onClick} className="group cursor-pointer">
       <div
-        className="h-full bg-secondary/[0.03] border border-secondary/10 rounded-xl p-6 transition-all duration-300 hover:bg-secondary/[0.06] hover:border-secondary/20 hover:-translate-y-1 hover:shadow-lg"
-        style={{
-          boxShadow: `0 0 0 0 ${discipline.color}00`,
+        className="h-full rounded-xl border border-secondary/10 bg-secondary/[0.03] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-secondary/20 hover:bg-secondary/[0.06] hover:shadow-lg"
+        style={{ boxShadow: `0 0 0 0 ${discipline.color}00` }}
+        onMouseEnter={(event) => {
+          event.currentTarget.style.borderColor = `${discipline.color}40`
+          event.currentTarget.style.boxShadow = `0 8px 30px ${discipline.color}15`
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = `${discipline.color}40`
-          e.currentTarget.style.boxShadow = `0 8px 30px ${discipline.color}15`
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = ''
-          e.currentTarget.style.boxShadow = ''
+        onMouseLeave={(event) => {
+          event.currentTarget.style.borderColor = ''
+          event.currentTarget.style.boxShadow = ''
         }}
       >
-        {/* Icon & Title Row */}
-        <div className="flex items-start gap-4 mb-4">
+        <div className="mb-4 flex items-start gap-4">
           <div
-            className="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110"
             style={{ backgroundColor: `${discipline.color}15`, color: discipline.color }}
           >
-            <DisciplineIcon type={discipline.icon} className="w-6 h-6" />
+            <DisciplineIcon type={discipline.icon} className="h-6 w-6" />
           </div>
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <h3
-              className="font-heading text-2xl lg:text-3xl transition-colors duration-300"
+              className="font-heading text-2xl transition-colors duration-300 lg:text-3xl"
               style={{ color: discipline.color }}
             >
               {discipline.name}
             </h3>
-            <div className="flex items-center gap-3 mt-1">
+            <div className="mt-1 flex items-center gap-3">
               <span className="text-xs text-secondary/50">{discipline.duration}</span>
-              <span className="w-1 h-1 rounded-full bg-secondary/30" />
+              <span className="h-1 w-1 rounded-full bg-secondary/30" />
               <span className="text-xs text-secondary/50">{discipline.intensity}</span>
             </div>
           </div>
         </div>
 
-        {/* Description */}
-        <p className="text-secondary/70 text-sm leading-relaxed mb-4">
-          {discipline.shortDesc}
-        </p>
+        <p className="mb-4 text-sm leading-relaxed text-secondary/70">{discipline.shortDesc}</p>
 
-        {/* Click indicator */}
         <div
-          className="inline-flex items-center gap-2 text-sm font-medium opacity-50 group-hover:opacity-100 transition-all duration-300"
+          className="inline-flex items-center gap-2 text-sm font-medium opacity-50 transition-all duration-300 group-hover:opacity-100"
           style={{ color: discipline.color }}
         >
           <span>Ver detalles</span>
-          <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </div>

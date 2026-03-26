@@ -1,175 +1,183 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
-
-/**
- * Coaches Component
- * Team section with photos, videos, and coach info
- *
- * To add real photos: Replace the placeholder div with:
- * <img src="/coaches/coach-name.jpg" alt="Coach Name" className="w-full h-full object-cover" />
- *
- * To add real videos: Replace the video placeholder with:
- * <video src="/coaches/coach-video.mp4" controls className="w-full h-full object-cover" />
- * Or use YouTube/Vimeo embeds
- */
+import { containerVariants, cardVariants } from '../utils/animations'
 
 const coaches = [
   {
     id: 1,
-    name: 'Coach Nombre 1',
-    role: 'Head Coach · Crossfit',
-    specialties: ['Crossfit', 'Halterofilia'],
-    bio: 'Más de 10 años de experiencia en entrenamiento funcional. Certificado CrossFit Level 3 y especialista en halterofilia olímpica.',
+    name: 'Equipo BoxKutral',
+    role: 'Head Coaching · CrossFit y fuerza',
+    specialties: ['CrossFit', 'Halterofilia'],
+    bio: 'Sesiones guiadas con foco en técnica, intensidad bien dosificada y progresión real para que mejores sin perder consistencia.',
     achievements: [
-      'CrossFit Level 3 Trainer',
-      'Campeón Regional 2022',
-      '+500 atletas entrenados',
+      'Clases escalables para todos los niveles',
+      'Seguimiento técnico en levantamientos',
+      'Comunidad competitiva y cercana',
     ],
+    metric: 'Fuerza + motor',
     color: '#FF6B00',
-    // Placeholder - replace with actual image path
     image: null,
-    // Placeholder - replace with actual video URL
-    video: null,
   },
   {
     id: 2,
-    name: 'Coach Nombre 2',
-    role: 'Coach · Powerbuilding & GAP',
+    name: 'Área de rendimiento',
+    role: 'Coaching · Powerbuilding y composición corporal',
     specialties: ['Powerbuilding', 'GAP 2.0'],
-    bio: 'Especialista en composición corporal y entrenamiento de fuerza. Enfoque en técnica y progresión segura.',
+    bio: 'Bloques orientados a ganar fuerza, construir masa muscular y mejorar composición corporal con una estructura clara y sostenible.',
     achievements: [
-      'Certificación NSCA',
-      'Especialista en Nutrición Deportiva',
-      '+300 transformaciones',
+      'Planes orientados a objetivos concretos',
+      'Énfasis en postura, volumen y ejecución',
+      'Trabajo complementario de core y estabilidad',
     ],
+    metric: 'Estética + potencia',
     color: '#9B59B6',
     image: null,
-    video: null,
   },
   {
     id: 3,
-    name: 'Coach Nombre 3',
-    role: 'Coach · Endurance & Crossfit',
-    specialties: ['Endurance', 'Crossfit'],
-    bio: 'Ex-atleta de resistencia con pasión por el entrenamiento cardiovascular. Especialista en programas de acondicionamiento.',
+    name: 'Área endurance',
+    role: 'Coaching · Resistencia y acondicionamiento',
+    specialties: ['Endurance', 'CrossFit'],
+    bio: 'Entrenamientos diseñados para mejorar tu capacidad cardiovascular, sostener ritmos altos y desarrollar una base física duradera.',
     achievements: [
-      'Ironman Finisher',
-      'Coach de Running certificado',
-      'Especialista en HIIT',
+      'Bloques AM y PM para distintas rutinas',
+      'Trabajo aeróbico y metabólico balanceado',
+      'Mejoras medibles en resistencia general',
     ],
+    metric: 'Resistencia real',
     color: '#00BCD4',
     image: null,
-    video: null,
   },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
+function CoachBadge({ coach }) {
+  const initials = coach.name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+
+  return (
+    <div className="relative h-full min-h-[18rem] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-secondary via-secondary to-secondary/90">
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{ background: `radial-gradient(circle at top left, ${coach.color}, transparent 55%)` }}
+      />
+      <div className="absolute right-5 top-5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/65">
+        {coach.metric}
+      </div>
+      <div className="relative flex h-full flex-col justify-end p-6">
+        <div
+          className="mb-5 flex h-20 w-20 items-center justify-center rounded-3xl text-2xl font-semibold text-white shadow-[0_20px_45px_rgba(0,0,0,0.25)]"
+          style={{ background: `linear-gradient(135deg, ${coach.color}, ${coach.color}BB)` }}
+        >
+          {initials}
+        </div>
+        <p className="max-w-[15rem] text-sm leading-relaxed text-white/68">
+          Coaching enfocado en resultados, adherencia y técnica bien ejecutada.
+        </p>
+      </div>
+    </div>
+  )
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' },
-  },
-}
-
-// Coach Modal with Video
 function CoachModal({ coach, isOpen, onClose }) {
+  const closeButtonRef = useRef(null)
+  const modalRef = useRef(null)
+
+  useEffect(() => {
+    if (!isOpen) return
+    closeButtonRef.current?.focus()
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus() }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus() }
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
   if (!coach) return null
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
           />
 
-          {/* Modal */}
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="coach-modal-title"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-4 md:inset-10 lg:inset-20 bg-secondary border border-primary/10 rounded-2xl z-50 overflow-hidden flex flex-col"
+            className="fixed inset-4 z-50 flex flex-col overflow-hidden rounded-2xl border border-primary/10 bg-secondary md:inset-10 lg:inset-20"
           >
-            {/* Header */}
-            <div className="p-6 md:p-8 border-b border-primary/10 flex items-start justify-between">
+            <div className="flex items-start justify-between border-b border-primary/10 p-6 md:p-8">
               <div>
-                <h2 className="font-heading text-3xl md:text-4xl text-primary">
-                  {coach.name}
-                </h2>
-                <p style={{ color: coach.color }} className="font-medium mt-1">
+                <h2 id="coach-modal-title" className="font-heading text-3xl text-primary md:text-4xl">{coach.name}</h2>
+                <p style={{ color: coach.color }} className="mt-1 font-medium">
                   {coach.role}
                 </p>
               </div>
               <button
+                ref={closeButtonRef}
                 onClick={onClose}
-                className="p-2 hover:bg-primary/10 rounded-lg transition-colors"
+                className="rounded-lg p-2 transition-colors hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-fire-orange"
+                aria-label="Cerrar perfil"
               >
-                <svg className="w-6 h-6 text-primary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-6 w-6 text-primary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            {/* Content */}
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              <div className="grid lg:grid-cols-2 gap-8">
-                {/* Video Section */}
+              <div className="grid gap-8 lg:grid-cols-2">
                 <div>
-                  <h3 className="font-heading text-xl text-primary mb-4">Video de Presentación</h3>
-                  <div className="aspect-video bg-primary/5 rounded-xl overflow-hidden border border-primary/10">
-                    {coach.video ? (
-                      // Replace with actual video embed
-                      <video
-                        src={coach.video}
-                        controls
-                        className="w-full h-full object-cover"
-                        poster={coach.image}
-                      />
-                    ) : (
-                      // Video Placeholder
-                      <div className="w-full h-full flex flex-col items-center justify-center text-primary/30">
-                        <svg className="w-16 h-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p className="text-sm">Video próximamente</p>
-                        <p className="text-xs mt-1 text-primary/20">
-                          Reemplazar con video del coach
-                        </p>
-                      </div>
-                    )}
+                  <h3 className="mb-4 font-heading text-xl text-primary">Estilo de coaching</h3>
+                  <div className="aspect-video">
+                    <CoachBadge coach={coach} />
                   </div>
                 </div>
 
-                {/* Info Section */}
                 <div className="space-y-6">
                   <div>
-                    <h3 className="font-heading text-xl text-primary mb-3">Sobre mí</h3>
-                    <p className="text-primary/70 leading-relaxed">{coach.bio}</p>
+                    <h3 className="mb-3 font-heading text-xl text-primary">Sobre el área</h3>
+                    <p className="leading-relaxed text-primary/70">{coach.bio}</p>
                   </div>
 
                   <div>
-                    <h3 className="font-heading text-xl text-primary mb-3">Especialidades</h3>
+                    <h3 className="mb-3 font-heading text-xl text-primary">Especialidades</h3>
                     <div className="flex flex-wrap gap-2">
                       {coach.specialties.map((specialty) => (
                         <span
                           key={specialty}
-                          className="px-3 py-1.5 rounded-full text-sm font-medium"
+                          className="rounded-full px-3 py-1.5 text-sm font-medium"
                           style={{ backgroundColor: `${coach.color}20`, color: coach.color }}
                         >
                           {specialty}
@@ -179,12 +187,12 @@ function CoachModal({ coach, isOpen, onClose }) {
                   </div>
 
                   <div>
-                    <h3 className="font-heading text-xl text-primary mb-3">Logros</h3>
+                    <h3 className="mb-3 font-heading text-xl text-primary">Lo que encontrarás</h3>
                     <ul className="space-y-2">
                       {coach.achievements.map((achievement, idx) => (
                         <li key={idx} className="flex items-center gap-3 text-primary/70">
                           <svg
-                            className="w-5 h-5 flex-shrink-0"
+                            className="h-5 w-5 shrink-0"
                             style={{ color: coach.color }}
                             fill="currentColor"
                             viewBox="0 0 20 20"
@@ -212,34 +220,32 @@ export default function Coaches() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="profesores" className="py-24 lg:py-32 bg-secondary relative">
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+    <section id="profesores" className="relative bg-secondary py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 lg:mb-20"
+          className="mb-16 text-center lg:mb-20"
         >
-          <span className="text-fire-orange text-sm font-semibold tracking-widest uppercase">
+          <span className="text-sm font-semibold uppercase tracking-widest text-fire-orange">
             Conoce al equipo
           </span>
-          <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-primary mt-4">
+          <h2 className="mt-4 font-heading text-4xl text-primary sm:text-5xl lg:text-6xl">
             NUESTROS COACHES
           </h2>
-          <p className="text-primary/50 mt-4 text-lg max-w-2xl mx-auto">
-            Profesionales apasionados que te guiarán en cada paso de tu transformación
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-primary/58">
+            Coaches y áreas de trabajo pensadas para ayudarte a entrenar mejor, avanzar con
+            estructura y sostener resultados.
           </p>
         </motion.div>
 
-        {/* Coaches Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
         >
           {coaches.map((coach) => (
             <motion.div
@@ -248,73 +254,31 @@ export default function Coaches() {
               onClick={() => setSelectedCoach(coach)}
               className="group cursor-pointer"
             >
-              <div className="bg-primary/5 border border-primary/10 rounded-xl overflow-hidden hover:border-fire-orange/30 transition-all duration-300 hover:transform hover:-translate-y-2">
-                {/* Photo */}
-                <div className="aspect-[4/5] relative overflow-hidden">
+              <div className="overflow-hidden rounded-xl border border-primary/10 bg-primary/5 transition-all duration-300 hover:-translate-y-2 hover:border-fire-orange/30">
+                <div className="relative aspect-[4/5] overflow-hidden">
                   {coach.image ? (
                     <img
                       src={coach.image}
                       alt={coach.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    // Photo Placeholder
-                    <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex flex-col items-center justify-center">
-                      <div
-                        className="w-24 h-24 rounded-full flex items-center justify-center mb-4"
-                        style={{ backgroundColor: `${coach.color}20` }}
-                      >
-                        <svg
-                          className="w-12 h-12"
-                          style={{ color: coach.color }}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                          />
-                        </svg>
-                      </div>
-                      <p className="text-primary/30 text-sm">Foto del coach</p>
-                      <p className="text-primary/20 text-xs mt-1">
-                        Agregar imagen aquí
-                      </p>
-                    </div>
+                    <CoachBadge coach={coach} />
                   )}
-
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                  {/* Play button indicator */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div
-                      className="w-16 h-16 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: coach.color }}
-                    >
-                      <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 </div>
 
-                {/* Info */}
                 <div className="p-6">
-                  <h3 className="font-heading text-2xl text-primary group-hover:text-fire-orange transition-colors">
+                  <h3 className="font-heading text-2xl text-primary transition-colors group-hover:text-fire-orange">
                     {coach.name}
                   </h3>
-                  <p className="text-primary/50 text-sm mt-1">{coach.role}</p>
+                  <p className="mt-1 text-sm text-primary/60">{coach.role}</p>
 
-                  {/* Specialties Tags */}
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="mt-4 flex flex-wrap gap-2">
                     {coach.specialties.map((specialty) => (
                       <span
                         key={specialty}
-                        className="px-2 py-1 rounded text-xs font-medium"
+                        className="rounded px-2 py-1 text-xs font-medium"
                         style={{ backgroundColor: `${coach.color}15`, color: coach.color }}
                       >
                         {specialty}
@@ -322,10 +286,9 @@ export default function Coaches() {
                     ))}
                   </div>
 
-                  {/* CTA */}
-                  <div className="mt-4 flex items-center gap-2 text-sm font-medium text-fire-orange opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>Ver perfil completo</span>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="mt-4 flex items-center gap-2 text-sm font-medium text-fire-orange opacity-0 transition-opacity group-hover:opacity-100">
+                    <span>Ver enfoque completo</span>
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
@@ -335,13 +298,11 @@ export default function Coaches() {
           ))}
         </motion.div>
 
-        {/* Note for adding more coaches */}
-        <p className="text-center text-primary/30 text-sm mt-12">
-          {/* Comment: To add more coaches, edit the coaches array in this file */}
+        <p className="mt-12 text-center text-sm text-primary/38">
+          Cada perfil resume el enfoque de trabajo que encontrarás dentro del box.
         </p>
       </div>
 
-      {/* Modal */}
       <CoachModal
         coach={selectedCoach}
         isOpen={!!selectedCoach}
