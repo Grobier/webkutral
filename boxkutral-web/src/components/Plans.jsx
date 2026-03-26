@@ -132,7 +132,7 @@ export default function Plans() {
                 href={createWhatsAppLink(`Hola BoxKutral, me interesa el ${plan.name}`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex w-full items-center justify-center gap-2 rounded px-6 py-4 font-bold uppercase tracking-wide transition-all duration-300 ${
+                className={`flex w-full items-center justify-center gap-2 rounded-xl px-6 py-4 font-bold uppercase tracking-wide transition-all duration-300 ${
                   plan.featured
                     ? 'bg-fire-orange text-white hover:bg-fire-red hover:shadow-lg hover:shadow-fire-orange/30'
                     : 'bg-primary/10 text-primary hover:bg-fire-orange hover:text-white'
@@ -158,7 +158,7 @@ export default function Plans() {
                 href={createWhatsAppLink(`Hola BoxKutral, me interesa el ${option.name}`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between rounded-lg border border-primary/10 bg-primary/5 p-6 transition-all duration-300 hover:border-fire-orange/50"
+                className="group flex items-center justify-between rounded-xl border border-primary/10 bg-primary/5 p-6 transition-all duration-300 hover:border-fire-orange/50"
               >
                 <span className="font-semibold text-primary">{option.name}</span>
                 <span className="font-heading text-2xl text-fire-orange transition-transform group-hover:scale-110">

@@ -5,8 +5,8 @@ import { containerVariants, cardVariants } from '../utils/animations'
 const coaches = [
   {
     id: 1,
-    name: 'Equipo BoxKutral',
-    role: 'Head Coaching · CrossFit y fuerza',
+    name: 'Coach 1',
+    role: 'Head Coach · CrossFit y Halterofilia',
     specialties: ['CrossFit', 'Halterofilia'],
     bio: 'Sesiones guiadas con foco en técnica, intensidad bien dosificada y progresión real para que mejores sin perder consistencia.',
     achievements: [
@@ -20,23 +20,68 @@ const coaches = [
   },
   {
     id: 2,
-    name: 'Área de rendimiento',
-    role: 'Coaching · Powerbuilding y composición corporal',
-    specialties: ['Powerbuilding', 'GAP 2.0'],
+    name: 'Coach 2',
+    role: 'Coach · CrossFit Competitivo',
+    specialties: ['CrossFit', 'Endurance'],
+    bio: 'Especializado en preparación competitiva y desarrollo del atleta funcional. Metodología progresiva para alcanzar tu peak de rendimiento.',
+    achievements: [
+      'Programación para atletas competitivos',
+      'Desarrollo de capacidades mixtas',
+      'Seguimiento de métricas y rendimiento',
+    ],
+    metric: 'Competición',
+    color: '#C0392B',
+    image: null,
+  },
+  {
+    id: 3,
+    name: 'Coach 3',
+    role: 'Coach · Halterofilia',
+    specialties: ['Halterofilia'],
+    bio: 'Especialista en levantamiento olímpico con enfoque en técnica de snatch y clean & jerk. Progresión medible y fuerza explosiva real.',
+    achievements: [
+      'Corrección técnica en levantamientos olímpicos',
+      'Programas de fuerza explosiva',
+      'Movilidad aplicada al rendimiento',
+    ],
+    metric: 'Potencia técnica',
+    color: '#F0B400',
+    image: null,
+  },
+  {
+    id: 4,
+    name: 'Coach 4',
+    role: 'Coach · Powerbuilding',
+    specialties: ['Powerbuilding'],
     bio: 'Bloques orientados a ganar fuerza, construir masa muscular y mejorar composición corporal con una estructura clara y sostenible.',
     achievements: [
       'Planes orientados a objetivos concretos',
       'Énfasis en postura, volumen y ejecución',
       'Trabajo complementario de core y estabilidad',
     ],
-    metric: 'Estética + potencia',
+    metric: 'Estética + fuerza',
     color: '#9B59B6',
     image: null,
   },
   {
-    id: 3,
-    name: 'Área endurance',
-    role: 'Coaching · Resistencia y acondicionamiento',
+    id: 5,
+    name: 'Coach 5',
+    role: 'Coach · GAP 2.0',
+    specialties: ['GAP 2.0'],
+    bio: 'Entrenamiento focalizado en glúteos, abdomen y piernas con metodología de alta eficiencia. Resultados visibles y sostenibles en el tiempo.',
+    achievements: [
+      'Tonificación localizada y efectiva',
+      'Trabajo de core profundo y estabilidad',
+      'Progresión adaptada a cada nivel',
+    ],
+    metric: 'Tono + definición',
+    color: '#2ECC71',
+    image: null,
+  },
+  {
+    id: 6,
+    name: 'Coach 6',
+    role: 'Coach · Endurance',
     specialties: ['Endurance', 'CrossFit'],
     bio: 'Entrenamientos diseñados para mejorar tu capacidad cardiovascular, sostener ritmos altos y desarrollar una base física duradera.',
     achievements: [
@@ -46,6 +91,36 @@ const coaches = [
     ],
     metric: 'Resistencia real',
     color: '#00BCD4',
+    image: null,
+  },
+  {
+    id: 7,
+    name: 'Coach 7',
+    role: 'Coach · Movilidad y Recovery',
+    specialties: ['Recovery', 'CrossFit'],
+    bio: 'Especialista en movilidad funcional, prevención de lesiones y recuperación activa. El complemento que hace la diferencia en tu rendimiento.',
+    achievements: [
+      'Protocolos de recuperación activa',
+      'Mejora de rango de movimiento',
+      'Prevención y manejo de lesiones',
+    ],
+    metric: 'Recuperación',
+    color: '#3498DB',
+    image: null,
+  },
+  {
+    id: 8,
+    name: 'Coach 8',
+    role: 'Coach · CrossFit y Nutrición',
+    specialties: ['CrossFit', 'Nutrición'],
+    bio: 'Integra el entrenamiento funcional con orientación nutricional para maximizar resultados. Enfoque holístico en salud y rendimiento.',
+    achievements: [
+      'Orientación nutricional deportiva',
+      'Planificación de carga y recuperación',
+      'Seguimiento integral del atleta',
+    ],
+    metric: 'Rendimiento total',
+    color: '#E67E22',
     image: null,
   },
 ]
@@ -245,7 +320,7 @@ export default function Coaches() {
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
         >
           {coaches.map((coach) => (
             <motion.div
@@ -255,7 +330,7 @@ export default function Coaches() {
               className="group cursor-pointer"
             >
               <div className="overflow-hidden rounded-xl border border-primary/10 bg-primary/5 transition-all duration-300 hover:-translate-y-2 hover:border-fire-orange/30">
-                <div className="relative aspect-[4/5] overflow-hidden">
+                <div className="relative aspect-[3/4] overflow-hidden">
                   {coach.image ? (
                     <img
                       src={coach.image}
@@ -268,17 +343,17 @@ export default function Coaches() {
                   <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 </div>
 
-                <div className="p-6">
-                  <h3 className="font-heading text-2xl text-primary transition-colors group-hover:text-fire-orange">
+                <div className="p-4">
+                  <h3 className="font-heading text-xl text-primary transition-colors group-hover:text-fire-orange">
                     {coach.name}
                   </h3>
-                  <p className="mt-1 text-sm text-primary/60">{coach.role}</p>
+                  <p className="mt-0.5 text-xs text-primary/60 leading-snug">{coach.role}</p>
 
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div className="mt-3 flex flex-wrap gap-1.5">
                     {coach.specialties.map((specialty) => (
                       <span
                         key={specialty}
-                        className="rounded px-2 py-1 text-xs font-medium"
+                        className="rounded px-2 py-0.5 text-xs font-medium"
                         style={{ backgroundColor: `${coach.color}15`, color: coach.color }}
                       >
                         {specialty}
@@ -286,7 +361,7 @@ export default function Coaches() {
                     ))}
                   </div>
 
-                  <div className="mt-4 flex items-center gap-2 text-sm font-medium text-fire-orange opacity-0 transition-opacity group-hover:opacity-100">
+                  <div className="mt-3 flex items-center gap-2 text-xs font-medium text-fire-orange opacity-0 transition-opacity group-hover:opacity-100">
                     <span>Ver enfoque completo</span>
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

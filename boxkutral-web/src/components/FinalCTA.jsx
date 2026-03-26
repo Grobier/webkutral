@@ -51,7 +51,7 @@ export default function FinalCTA() {
               href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 rounded bg-primary px-10 py-5 text-lg font-bold uppercase tracking-wide text-secondary transition-all duration-300 hover:scale-105 hover:bg-fire-orange hover:text-primary hover:shadow-2xl hover:shadow-fire-orange/30"
+              className="inline-flex items-center gap-3 rounded-xl bg-primary px-10 py-5 text-lg font-bold uppercase tracking-wide text-secondary transition-all duration-300 hover:scale-105 hover:bg-fire-orange hover:text-primary hover:shadow-2xl hover:shadow-fire-orange/30"
             >
               <WhatsAppIcon />
               Escríbenos por WhatsApp

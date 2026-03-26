@@ -257,7 +257,7 @@ export default function Schedules() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="rounded-lg bg-secondary/5 p-6 lg:p-8"
+            className="rounded-xl bg-secondary/5 p-6 lg:p-8"
           >
             <ScheduleGrid disciplineId={activeTab} color={activeDiscipline.color} />
           </motion.div>

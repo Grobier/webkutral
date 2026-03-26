@@ -61,7 +61,7 @@ export default function Testimonials() {
             <motion.div
               key={testimonial.id}
               variants={cardVariants}
-              className="rounded-lg border border-secondary/10 bg-secondary/5 p-8 transition-colors duration-300 hover:border-fire-orange/30"
+              className="rounded-xl border border-secondary/10 bg-secondary/5 p-8 transition-colors duration-300 hover:border-fire-orange/30"
             >
               <div className="mb-6">
                 <svg className="h-10 w-10 text-fire-orange" fill="currentColor" viewBox="0 0 24 24">
