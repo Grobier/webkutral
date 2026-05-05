@@ -120,77 +120,123 @@ function ScheduleSlot({ value, color }) {
   )
 }
 
+function MobileScheduleGrid({ disciplineId, color }) {
+  const data = scheduleData[disciplineId]
+  const [selectedDay, setSelectedDay] = useState(0)
+
+  const allSlots = [
+    ...Object.entries(data.am).map(([hour, slots]) => ({ hour, slot: slots[selectedDay], block: 'AM' })),
+    ...Object.entries(data.pm).map(([hour, slots]) => ({ hour, slot: slots[selectedDay], block: 'PM' })),
+  ].filter(({ slot }) => slot !== false)
+
+  return (
+    <div>
+      <div className="mb-4 flex gap-1.5">
+        {days.map((day, i) => (
+          <button
+            key={day}
+            onClick={() => setSelectedDay(i)}
+            className="flex-1 rounded-lg py-2 text-xs font-semibold transition-colors duration-200"
+            style={
+              selectedDay === i
+                ? { backgroundColor: color, color: '#fff' }
+                : { backgroundColor: 'rgba(0,0,0,0.06)', color: 'rgba(0,0,0,0.5)' }
+            }
+          >
+            {day}
+          </button>
+        ))}
+      </div>
+
+      {allSlots.length === 0 ? (
+        <p className="py-8 text-center text-sm text-secondary/40">Sin clases este día</p>
+      ) : (
+        <div className="space-y-2">
+          {allSlots.map(({ hour, slot, block }) => (
+            <div
+              key={`${hour}-${block}`}
+              className="flex items-center gap-3 rounded-xl px-4 py-3"
+              style={{ backgroundColor: `${color}15` }}
+            >
+              <span className="w-12 text-sm font-medium text-secondary/60">{hour}</span>
+              <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+              <span className="flex-1 text-sm font-medium text-secondary">
+                {typeof slot === 'string' ? slot : 'Clase disponible'}
+              </span>
+              <span
+                className="rounded px-1.5 py-0.5 text-xs font-semibold"
+                style={{ backgroundColor: `${color}20`, color }}
+              >
+                {block}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ScheduleTable({ data, block, color }) {
+  const rows = block === 'am' ? data.am : data.pm
+  return (
+    <div className="overflow-hidden rounded-xl border border-secondary/8">
+      <table className="w-full">
+        <thead>
+          <tr>
+            <th scope="col" className="w-16 py-2 pl-3 text-left text-xs font-medium text-secondary/50">Hora</th>
+            {days.map((day) => (
+              <th key={day} scope="col" className="py-2 text-center text-xs font-medium text-secondary/50">
+                {day}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(rows).map(([hour, slots]) => (
+            <tr key={hour}>
+              <td className="py-1 pl-3 text-xs font-medium text-secondary/70">{hour}</td>
+              {slots.map((slot, idx) => (
+                <td key={idx} className="px-0.5 py-0.5">
+                  <ScheduleSlot value={slot} color={color} />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function ScheduleGrid({ disciplineId, color }) {
   const data = scheduleData[disciplineId]
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-secondary/80">
-          <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
-          BLOQUE AM (6:00 - 12:00)
-        </h4>
-        <div className="overflow-x-auto rounded-xl border border-secondary/8">
-          <table className="w-full min-w-[600px]">
-            <thead>
-              <tr>
-                <th scope="col" className="w-20 py-2 text-left text-sm font-medium text-secondary/50">Hora</th>
-                {days.map((day) => (
-                  <th key={day} scope="col" className="py-2 text-center text-sm font-medium text-secondary/50">
-                    {day}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(data.am).map(([hour, slots]) => (
-                <tr key={hour}>
-                  <td className="py-2 text-sm font-medium text-secondary/70">{hour}</td>
-                  {slots.map((slot, idx) => (
-                    <td key={idx} className="px-1 py-1">
-                      <ScheduleSlot value={slot} color={color} />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <>
+      {/* Mobile: day selector + vertical list */}
+      <div className="sm:hidden">
+        <MobileScheduleGrid disciplineId={disciplineId} color={color} />
       </div>
 
-      <div>
-        <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-secondary/80">
-          <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
-          BLOQUE PM (17:00 - 21:00)
-        </h4>
-        <div className="overflow-x-auto rounded-xl border border-secondary/8">
-          <table className="w-full min-w-[600px]">
-            <thead>
-              <tr>
-                <th scope="col" className="w-20 py-2 text-left text-sm font-medium text-secondary/50">Hora</th>
-                {days.map((day) => (
-                  <th key={day} scope="col" className="py-2 text-center text-sm font-medium text-secondary/50">
-                    {day}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(data.pm).map(([hour, slots]) => (
-                <tr key={hour}>
-                  <td className="py-2 text-sm font-medium text-secondary/70">{hour}</td>
-                  {slots.map((slot, idx) => (
-                    <td key={idx} className="px-1 py-1">
-                      <ScheduleSlot value={slot} color={color} />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Desktop: full tables */}
+      <div className="hidden sm:block space-y-8">
+        <div>
+          <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-secondary/80">
+            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
+            BLOQUE AM (6:00 - 12:00)
+          </h4>
+          <ScheduleTable data={data} block="am" color={color} />
+        </div>
+        <div>
+          <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-secondary/80">
+            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
+            BLOQUE PM (17:00 - 21:00)
+          </h4>
+          <ScheduleTable data={data} block="pm" color={color} />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -243,7 +289,7 @@ export default function Schedules() {
           ))}
         </div>
 
-        <p className="mb-8 text-sm text-secondary/45 md:hidden">
+        <p className="mb-8 text-sm text-secondary/45 hidden sm:block md:hidden">
           Desliza horizontalmente para revisar todos los días y bloques.
         </p>
 

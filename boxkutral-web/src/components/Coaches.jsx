@@ -1,129 +1,150 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { containerVariants, cardVariants } from '../utils/animations'
 
 const coaches = [
   {
     id: 1,
-    name: 'Coach 1',
-    role: 'Head Coach · CrossFit y Halterofilia',
+    name: 'Robert Bolbarán',
+    role: 'Coach · CrossFit y Halterofilia',
     specialties: ['CrossFit', 'Halterofilia'],
-    bio: 'Sesiones guiadas con foco en técnica, intensidad bien dosificada y progresión real para que mejores sin perder consistencia.',
+    bio: 'Combina lo mejor del entrenamiento funcional con la técnica olímpica. Guía cada sesión adaptando la intensidad y corrigiendo en detalle para que progreses sin importar tu nivel.',
     achievements: [
-      'Clases escalables para todos los niveles',
-      'Seguimiento técnico en levantamientos',
+      'Fuerza explosiva y coordinación con la barra',
+      'WODs escalables para todos los niveles',
+      'Corrección técnica en arranque y envión',
       'Comunidad competitiva y cercana',
     ],
     metric: 'Fuerza + motor',
     color: '#FF6B00',
-    image: null,
+    image: '/coaches/Robert Bolbaran.png',
   },
   {
     id: 2,
-    name: 'Coach 2',
-    role: 'Coach · CrossFit Competitivo',
-    specialties: ['CrossFit', 'Endurance'],
-    bio: 'Especializado en preparación competitiva y desarrollo del atleta funcional. Metodología progresiva para alcanzar tu peak de rendimiento.',
-    achievements: [
-      'Programación para atletas competitivos',
-      'Desarrollo de capacidades mixtas',
-      'Seguimiento de métricas y rendimiento',
-    ],
-    metric: 'Competición',
-    color: '#C0392B',
-    image: null,
-  },
-  {
-    id: 3,
-    name: 'Coach 3',
+    name: 'Cristian Infantes',
     role: 'Coach · Halterofilia',
     specialties: ['Halterofilia'],
-    bio: 'Especialista en levantamiento olímpico con enfoque en técnica de snatch y clean & jerk. Progresión medible y fuerza explosiva real.',
+    bio: 'Enseña la técnica del arranque y envión paso a paso. Corrige el agarre, la trayectoria de la barra y la extensión de cadera para que cada levantamiento sea más eficiente y seguro.',
     achievements: [
-      'Corrección técnica en levantamientos olímpicos',
-      'Programas de fuerza explosiva',
-      'Movilidad aplicada al rendimiento',
+      'Fuerza explosiva y velocidad bajo la barra',
+      'Movilidad de hombros, cadera y tobillos',
+      'Precisión técnica y control en cada repetición',
+      'Progresión ordenada sin apurar el proceso',
     ],
     metric: 'Potencia técnica',
     color: '#F0B400',
-    image: null,
+    image: '/coaches/Cristian Infantes.png',
+  },
+  {
+    id: 3,
+    name: 'Lorenzo Grobier',
+    role: 'Coach · Powerbuilding',
+    specialties: ['Powerbuilding'],
+    bio: 'Guía el proceso seleccionando ejercicios según el nivel y objetivo de cada persona. Enseña técnica en movimientos principales, ajusta cargas y organiza una planificación progresiva para que entrenes con estructura, no al azar.',
+    achievements: [
+      'Fuerza e hipertrofia con progresión medible',
+      'Mejor composición corporal: más músculo, menos grasa',
+      'Técnica sólida en sentadilla, press y peso muerto',
+      'Mayor confianza física y seguridad entrenando',
+    ],
+    metric: 'Fuerza + músculo',
+    color: '#9B59B6',
+    image: '/coaches/Lorenzo Grobier.JPG',
   },
   {
     id: 4,
-    name: 'Coach 4',
-    role: 'Coach · Powerbuilding',
-    specialties: ['Powerbuilding'],
-    bio: 'Bloques orientados a ganar fuerza, construir masa muscular y mejorar composición corporal con una estructura clara y sostenible.',
+    name: 'Camilo Piza',
+    role: 'Coach · CrossFit y GAP',
+    specialties: ['CrossFit', 'GAP'],
+    bio: 'Combina entrenamientos funcionales de alta intensidad con trabajo localizado en glúteos, abdomen y piernas. Clases dinámicas, técnicas y pensadas para resultados reales.',
     achievements: [
-      'Planes orientados a objetivos concretos',
-      'Énfasis en postura, volumen y ejecución',
-      'Trabajo complementario de core y estabilidad',
+      'Fuerza general y mejor composición corporal',
+      'Tonificación de glúteos, piernas y core',
+      'WODs escalables para cualquier nivel',
+      'Activación muscular precisa en cada ejercicio',
     ],
-    metric: 'Estética + fuerza',
-    color: '#9B59B6',
-    image: null,
+    metric: 'Funcional + tono',
+    color: '#C0392B',
+    image: '/coaches/Camilo Piza.png',
   },
   {
     id: 5,
-    name: 'Coach 5',
-    role: 'Coach · GAP 2.0',
-    specialties: ['GAP 2.0'],
-    bio: 'Entrenamiento focalizado en glúteos, abdomen y piernas con metodología de alta eficiencia. Resultados visibles y sostenibles en el tiempo.',
+    name: 'Camilo Martínez',
+    role: 'Coach · CrossFit Competitivo',
+    specialties: ['CrossFit'],
+    bio: 'Guía clases con foco en rendimiento y superación. Corrige técnica, regula la intensidad y propone escalas para que cada persona entrene fuerte sin importar su experiencia previa.',
     achievements: [
-      'Tonificación localizada y efectiva',
-      'Trabajo de core profundo y estabilidad',
-      'Progresión adaptada a cada nivel',
+      'Mejora de fuerza, resistencia y coordinación',
+      'Programación orientada a resultados medibles',
+      'Motivación y seguimiento en cada sesión',
+      'Superación personal constante',
     ],
-    metric: 'Tono + definición',
-    color: '#2ECC71',
-    image: null,
+    metric: 'Competición',
+    color: '#E67E22',
+    image: '/coaches/Camilo Martínez.png',
   },
   {
     id: 6,
-    name: 'Coach 6',
-    role: 'Coach · Endurance',
-    specialties: ['Endurance', 'CrossFit'],
-    bio: 'Entrenamientos diseñados para mejorar tu capacidad cardiovascular, sostener ritmos altos y desarrollar una base física duradera.',
+    name: 'Samuel Rojas',
+    role: 'Coach · CrossFit',
+    specialties: ['CrossFit'],
+    bio: 'Entrenamiento funcional variado e intenso. Cada clase combina fuerza, gimnasia y resistencia cardiovascular adaptada al nivel de cada alumno, con corrección técnica en todo momento.',
     achievements: [
-      'Bloques AM y PM para distintas rutinas',
-      'Trabajo aeróbico y metabólico balanceado',
-      'Mejoras medibles en resistencia general',
+      'Capacidad cardiovascular y fuerza general',
+      'Desarrollo de coordinación, equilibrio y agilidad',
+      'Clases motivadoras con progresión real',
+      'Ambiente de comunidad y superación',
     ],
-    metric: 'Resistencia real',
-    color: '#00BCD4',
-    image: null,
+    metric: 'Motor funcional',
+    color: '#3498DB',
+    image: '/coaches/Samuel Rojas 2.JPG',
   },
   {
     id: 7,
-    name: 'Coach 7',
-    role: 'Coach · Movilidad y Recovery',
-    specialties: ['Recovery', 'CrossFit'],
-    bio: 'Especialista en movilidad funcional, prevención de lesiones y recuperación activa. El complemento que hace la diferencia en tu rendimiento.',
+    name: 'Armando Yancen',
+    role: 'Coach · CrossFit y Endurance',
+    specialties: ['CrossFit', 'Endurance'],
+    bio: 'Controla la intensidad mediante zonas de esfuerzo y bloques progresivos. Enseña a regular el ritmo, respirar mejor y distribuir la energía para rendir más sin agotarse antes de tiempo.',
     achievements: [
-      'Protocolos de recuperación activa',
-      'Mejora de rango de movimiento',
-      'Prevención y manejo de lesiones',
+      'Resistencia cardiovascular y mayor energía diaria',
+      'Mejor tolerancia a la fatiga',
+      'Control del ritmo y la respiración',
+      'Rendimiento sostenido dentro y fuera del box',
     ],
-    metric: 'Recuperación',
-    color: '#3498DB',
-    image: null,
+    metric: 'Resistencia real',
+    color: '#00BCD4',
+    image: '/coaches/Armando Yancen .jpg',
   },
   {
     id: 8,
-    name: 'Coach 8',
-    role: 'Coach · CrossFit y Nutrición',
-    specialties: ['CrossFit', 'Nutrición'],
-    bio: 'Integra el entrenamiento funcional con orientación nutricional para maximizar resultados. Enfoque holístico en salud y rendimiento.',
+    name: 'María José',
+    role: 'Coach · CrossFit, GAP y Endurance',
+    specialties: ['CrossFit', 'GAP', 'Endurance'],
+    bio: 'Clases con energía, técnica y propósito. Desde fortalecer el tren inferior y el core hasta mejorar la resistencia cardiovascular, siempre con foco en que sientas el trabajo y veas resultados.',
     achievements: [
-      'Orientación nutricional deportiva',
-      'Planificación de carga y recuperación',
-      'Seguimiento integral del atleta',
+      'Tonificación de glúteos, abdomen y piernas',
+      'Mayor resistencia y capacidad pulmonar',
+      'Fuerza funcional aplicada al movimiento diario',
+      'Mejor postura, estabilidad y control corporal',
     ],
-    metric: 'Rendimiento total',
-    color: '#E67E22',
-    image: null,
+    metric: 'Energía total',
+    color: '#2ECC71',
+    image: '/coaches/Cote.JPG',
   },
 ]
+
+function CoachImage({ coach, className = '' }) {
+  const [error, setError] = useState(false)
+  if (!coach.image || error) return <CoachBadge coach={coach} />
+  return (
+    <img
+      src={coach.image}
+      alt={coach.name}
+      className={`h-full w-full object-cover ${className}`}
+      draggable={false}
+      onError={() => setError(true)}
+    />
+  )
+}
 
 function CoachBadge({ coach }) {
   const initials = coach.name
@@ -210,7 +231,7 @@ function CoachModal({ coach, isOpen, onClose }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-4 z-50 flex flex-col overflow-hidden rounded-2xl border border-primary/10 bg-secondary md:inset-10 lg:inset-20"
+            className="fixed left-1/2 top-1/2 z-50 flex w-[calc(100vw-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-primary/10 bg-secondary shadow-2xl"
           >
             <div className="flex items-start justify-between border-b border-primary/10 p-6 md:p-8">
               <div>
@@ -231,16 +252,15 @@ function CoachModal({ coach, isOpen, onClose }) {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              <div className="grid gap-8 lg:grid-cols-2">
-                <div>
-                  <h3 className="mb-4 font-heading text-xl text-primary">Estilo de coaching</h3>
-                  <div className="aspect-video">
-                    <CoachBadge coach={coach} />
+            <div className="overflow-y-auto p-6">
+              <div className="flex gap-6">
+                <div className="shrink-0">
+                  <div className="w-36 overflow-hidden rounded-xl sm:w-44">
+                    <CoachImage coach={coach} />
                   </div>
                 </div>
 
-                <div className="space-y-6">
+                <div className="min-w-0 flex-1 space-y-4">
                   <div>
                     <h3 className="mb-3 font-heading text-xl text-primary">Sobre el área</h3>
                     <p className="leading-relaxed text-primary/70">{coach.bio}</p>
@@ -262,10 +282,10 @@ function CoachModal({ coach, isOpen, onClose }) {
                   </div>
 
                   <div>
-                    <h3 className="mb-3 font-heading text-xl text-primary">Lo que encontrarás</h3>
+                    <h3 className="mb-3 font-heading text-xl text-primary">Lo que vas a lograr</h3>
                     <ul className="space-y-2">
-                      {coach.achievements.map((achievement, idx) => (
-                        <li key={idx} className="flex items-center gap-3 text-primary/70">
+                      {coach.achievements.map((achievement) => (
+                        <li key={achievement} className="flex items-center gap-3 text-primary/70">
                           <svg
                             className="h-5 w-5 shrink-0"
                             style={{ color: coach.color }}
@@ -290,18 +310,29 @@ function CoachModal({ coach, isOpen, onClose }) {
 }
 
 export default function Coaches() {
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedCoach, setSelectedCoach] = useState(null)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
+  const paginate = (dir) => {
+    setCurrentIndex((prev) => (prev + dir + coaches.length) % coaches.length)
+  }
+
+  const getPos = (index) => {
+    const diff = ((index - currentIndex) + coaches.length) % coaches.length
+    return diff > coaches.length / 2 ? diff - coaches.length : diff
+  }
+
   return (
-    <section id="profesores" className="relative bg-secondary py-24 lg:py-32">
+    <section id="profesores" className="relative bg-secondary py-24 lg:py-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="mb-16 text-center lg:mb-20"
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-fire-orange">
@@ -310,72 +341,141 @@ export default function Coaches() {
           <h2 className="mt-4 font-heading text-4xl text-primary sm:text-5xl lg:text-6xl">
             NUESTROS COACHES
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-primary/58">
-            Coaches y áreas de trabajo pensadas para ayudarte a entrenar mejor, avanzar con
-            estructura y sostener resultados.
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-primary/60">
+            Coaches y áreas de trabajo pensadas para ayudarte a entrenar mejor, avanzar con estructura y sostener resultados.
           </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
-        >
-          {coaches.map((coach) => (
-            <motion.div
-              key={coach.id}
-              variants={cardVariants}
-              onClick={() => setSelectedCoach(coach)}
-              className="group cursor-pointer"
-            >
-              <div className="overflow-hidden rounded-xl border border-primary/10 bg-primary/5 transition-all duration-300 hover:-translate-y-2 hover:border-fire-orange/30">
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  {coach.image ? (
-                    <img
-                      src={coach.image}
-                      alt={coach.name}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <CoachBadge coach={coach} />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                </div>
+        {/* Carousel */}
+        <div className="relative flex items-center justify-center">
+          {/* Arrow izquierda */}
+          <button
+            onClick={() => paginate(-1)}
+            className="absolute left-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-secondary/80 text-primary backdrop-blur-sm transition-all hover:border-fire-orange hover:text-fire-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fire-orange sm:left-2"
+            aria-label="Coach anterior"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-                <div className="p-4">
-                  <h3 className="font-heading text-xl text-primary transition-colors group-hover:text-fire-orange">
-                    {coach.name}
-                  </h3>
-                  <p className="mt-0.5 text-xs text-primary/60 leading-snug">{coach.role}</p>
+          {/* Cards */}
+          <div className="relative flex h-[540px] w-full items-center justify-center sm:h-[620px] lg:h-[680px]">
+            {coaches.map((coach, index) => {
+              const pos = getPos(index)
+              const isCenter = pos === 0
+              const isPrev = pos === -1
+              const isNext = pos === 1
+              if (!isCenter && !isPrev && !isNext) return null
 
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {coach.specialties.map((specialty) => (
-                      <span
-                        key={specialty}
-                        className="rounded px-2 py-0.5 text-xs font-medium"
-                        style={{ backgroundColor: `${coach.color}15`, color: coach.color }}
-                      >
-                        {specialty}
-                      </span>
-                    ))}
+              return (
+                <motion.div
+                  key={coach.id}
+                  animate={{
+                    x: pos * 175,
+                    scale: isCenter ? 1 : 0.82,
+                    opacity: isCenter ? 1 : 0.45,
+                    zIndex: isCenter ? 10 : 3,
+                  }}
+                  whileHover={
+                    !isCenter
+                      ? { opacity: 0.85, scale: 0.88 }
+                      : {}
+                  }
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  className="absolute w-72 cursor-pointer select-none sm:w-80 lg:w-[22rem]"
+                  onClick={() => {
+                    if (isCenter) setSelectedCoach(coach)
+                    else paginate(isPrev ? -1 : 1)
+                  }}
+                >
+                  <div
+                    className="overflow-hidden rounded-2xl shadow-2xl transition-colors duration-300"
+                    style={{
+                      border: isCenter
+                        ? `2px solid ${coach.color}60`
+                        : '2px solid transparent',
+                    }}
+                  >
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      <CoachImage coach={coach} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+
+                      {/* Info superpuesta — siempre visible */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <h3
+                          className="font-heading text-lg text-white sm:text-xl"
+                          style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
+                        >
+                          {coach.name}
+                        </h3>
+                        {isCenter && (
+                          <>
+                            <p className="mt-0.5 text-xs text-white/60 leading-snug">{coach.role}</p>
+                            <div className="mt-2 flex flex-wrap gap-1.5">
+                              {coach.specialties.map((s) => (
+                                <span
+                                  key={s}
+                                  className="rounded px-2 py-0.5 text-xs font-medium"
+                                  style={{ backgroundColor: `${coach.color}35`, color: coach.color }}
+                                >
+                                  {s}
+                                </span>
+                              ))}
+                            </div>
+                            <p className="mt-3 flex items-center gap-1 text-xs font-semibold text-fire-orange">
+                              Ver perfil completo
+                              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </p>
+                          </>
+                        )}
+                        {!isCenter && (
+                          <p className="mt-1 text-[11px] text-white/40">{coach.specialties[0]}</p>
+                        )}
+                      </div>
+
+                      {/* Hover overlay color en side cards */}
+                      {!isCenter && (
+                        <div
+                          className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"
+                          style={{ background: `linear-gradient(to top, ${coach.color}50, transparent 60%)` }}
+                        />
+                      )}
+                    </div>
                   </div>
+                </motion.div>
+              )
+            })}
+          </div>
 
-                  <div className="mt-3 flex items-center gap-2 text-xs font-medium text-fire-orange opacity-0 transition-opacity group-hover:opacity-100">
-                    <span>Ver enfoque completo</span>
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+          {/* Arrow derecha */}
+          <button
+            onClick={() => paginate(1)}
+            className="absolute right-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-secondary/80 text-primary backdrop-blur-sm transition-all hover:border-fire-orange hover:text-fire-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fire-orange sm:right-2"
+            aria-label="Coach siguiente"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Dots */}
+        <div className="mt-8 flex justify-center gap-2">
+          {coaches.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i === currentIndex ? 'w-8 bg-fire-orange' : 'w-2 bg-primary/25 hover:bg-primary/50'
+              }`}
+              aria-label={`Ir al coach ${i + 1}`}
+            />
           ))}
-        </motion.div>
+        </div>
 
-        <p className="mt-12 text-center text-sm text-primary/38">
-          Cada perfil resume el enfoque de trabajo que encontrarás dentro del box.
-        </p>
       </div>
 
       <CoachModal

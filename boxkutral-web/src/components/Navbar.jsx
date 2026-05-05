@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { WHATSAPP_LINK } from '../constants'
+import { FREE_CLASS_LINK } from '../constants'
 
 const navLinks = [
   { name: 'Disciplinas', href: '#disciplinas' },
@@ -112,12 +112,12 @@ export default function Navbar() {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href={WHATSAPP_LINK}
+              href={FREE_CLASS_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-fire py-2.5 px-5 text-sm"
             >
-              Únete Ahora
+              Clase Gratis
             </a>
           </div>
 
@@ -174,13 +174,13 @@ export default function Navbar() {
                 })}
                 <div className="pt-2">
                   <a
-                    href={WHATSAPP_LINK}
+                    href={FREE_CLASS_LINK}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-fire w-full justify-center"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Únete Ahora
+                    Clase Gratis
                   </a>
                 </div>
               </div>

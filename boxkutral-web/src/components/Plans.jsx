@@ -108,8 +108,8 @@ export default function Plans() {
               </div>
 
               <ul className="mb-8 space-y-3">
-                {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
+                {plan.features.map((feature) => (
+                  <li key={feature.text} className="flex items-start gap-3">
                     <svg
                       className={`mt-0.5 h-5 w-5 shrink-0 ${feature.highlight ? 'text-fire-orange' : 'text-primary/50'}`}
                       fill="currentColor"

@@ -1,105 +1,114 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { containerVariants, cardVariants } from '../utils/animations'
+import { createWhatsAppLink } from '../constants'
 
 const disciplines = [
   {
-    id: 'crossfit',
-    name: 'CROSSFIT',
-    shortDesc: 'El atleta completo. Equilibrio alto entre fuerza, resistencia y potencia.',
-    color: '#FF6B00',
-    icon: 'crossfit',
-    fullDescription: `CrossFit es un programa de entrenamiento de alta intensidad que combina elementos de cardio,
-    levantamiento de pesas, gimnasia y más. Cada día es diferente, con WODs (Workout of the Day) que desafían
-    tu cuerpo de formas nuevas y emocionantes.`,
+    id: 'powerbuilding',
+    name: 'POWERBUILDING',
+    shortDesc: 'Fuerza e hipertrofia. Más músculo, mejor estética y progresión medible.',
+    color: '#9B59B6',
+    icon: 'muscle',
+    fullDescription: 'El Powerbuilding combina lo mejor del entrenamiento de fuerza y la hipertrofia muscular. Une ejercicios básicos como sentadilla, peso muerto, press banca y press militar con ejercicios accesorios enfocados en desarrollar masa muscular, mejorar la estética corporal y aumentar el rendimiento físico de forma progresiva y segura.',
+    keywords: ['Fuerza', 'Hipertrofia', 'Masa muscular', 'Estética', 'Rendimiento', 'Progresión', 'Técnica', 'Sobrecarga progresiva'],
     benefits: [
-      'Mejora la capacidad cardiovascular y respiratoria',
-      'Aumenta la fuerza y resistencia muscular',
-      'Desarrolla flexibilidad y coordinación',
-      'Quema alta de calorías en poco tiempo',
-      'Comunidad motivadora y competitiva',
+      'Aumento de fuerza y capacidad de levantar más carga',
+      'Desarrollo de masa muscular en todo el cuerpo',
+      'Mejor composición corporal: menos grasa, más músculo',
+      'Técnica sólida en movimientos básicos',
+      'Mayor confianza física y seguridad entrenando',
+      'Progresión medible semana a semana',
     ],
-    idealFor: 'Personas que buscan un entrenamiento completo y variado, con espíritu competitivo.',
+    coachMethod: 'El coach selecciona ejercicios según el nivel, objetivo y condición de cada persona. Enseña la técnica de los movimientos principales, ajusta cargas, repeticiones, descansos y volumen para que haya progreso sin sobrecargar el cuerpo. Corrige postura, controla la intensidad y organiza una planificación progresiva con estructura clara.',
+    salesText: 'Si quieres ganar fuerza, construir músculo y verte mejor, el Powerbuilding es para ti. No se trata solo de levantar pesado, sino de entrenar con intención, técnica y progresión. Hazte más fuerte y construye un cuerpo funcional, estético y resistente.',
     duration: '60 min',
     intensity: 'Alta',
   },
   {
     id: 'halterofilia',
     name: 'HALTEROFILIA',
-    shortDesc: 'Potencia pura y técnica. Ideal para fuerza explosiva y coordinación.',
+    shortDesc: 'Arranque y envión. Fuerza explosiva, velocidad y precisión técnica.',
     color: '#F0B400',
     icon: 'weightlifting',
-    fullDescription: `La halterofilia o levantamiento olímpico se centra en dos movimientos principales:
-    el snatch (arranque) y el clean & jerk (envión). Es un deporte que requiere técnica precisa,
-    fuerza explosiva y movilidad excepcional.`,
+    fullDescription: 'La halterofilia es una disciplina olímpica basada en dos levantamientos: arranque y envión. Combina fuerza, velocidad, movilidad, coordinación y técnica. Busca levantar una carga desde el suelo hasta sobre la cabeza de la forma más eficiente y explosiva posible.',
+    keywords: ['Arranque', 'Envión', 'Fuerza explosiva', 'Técnica', 'Velocidad', 'Movilidad', 'Coordinación', 'Precisión'],
     benefits: [
-      'Desarrolla fuerza explosiva máxima',
-      'Mejora la coordinación neuromuscular',
-      'Aumenta la movilidad articular',
-      'Fortalece el core y la estabilidad',
-      'Perfecciona la técnica de levantamiento',
+      'Desarrollo de fuerza explosiva',
+      'Mejora de la coordinación y control corporal',
+      'Aumento de la movilidad de hombros, cadera y tobillos',
+      'Mayor potencia en movimientos deportivos',
+      'Mejora de la velocidad bajo la barra',
+      'Desarrollo de concentración y precisión técnica',
     ],
-    idealFor: 'Atletas que quieren mejorar su potencia y técnica de levantamiento.',
+    coachMethod: 'El coach enseña la técnica paso a paso, desde posiciones básicas hasta movimientos completos. Corrige el agarre, la trayectoria de la barra, la extensión de cadera y la estabilidad sobre la cabeza. Adapta los ejercicios según la movilidad y experiencia del alumno, utilizando progresiones y cargas adecuadas.',
+    salesText: 'La halterofilia no es solo levantar peso: es aprender a moverte con fuerza, velocidad y precisión. Si quieres mejorar tu técnica, potencia y confianza con la barra, este es el lugar para comenzar.',
     duration: '90 min',
     intensity: 'Alta',
   },
   {
-    id: 'powerbuilding',
-    name: 'POWERBUILDING',
-    shortDesc: 'Estética visual. Máxima definición muscular y simetría.',
-    color: '#9B59B6',
-    icon: 'muscle',
-    fullDescription: `Powerbuilding combina lo mejor del powerlifting (fuerza máxima) con el bodybuilding
-    (hipertrofia y estética). El objetivo es construir un físico fuerte y visualmente impresionante,
-    sin sacrificar ninguno de los dos aspectos.`,
+    id: 'crossfit',
+    name: 'CROSSFIT',
+    shortDesc: 'Entrenamiento funcional que combina fuerza, resistencia y comunidad.',
+    color: '#FF6B00',
+    icon: 'crossfit',
+    fullDescription: 'El CrossFit es una metodología de entrenamiento funcional que combina ejercicios de fuerza, gimnasia, halterofilia y resistencia cardiovascular. Sus sesiones son variadas e intensas y se adaptan a distintos niveles, desde principiantes hasta avanzados, utilizando movimientos funcionales aplicados a la vida diaria y al rendimiento deportivo.',
+    keywords: ['Funcional', 'Fuerza', 'Resistencia', 'Comunidad', 'Intensidad', 'WOD', 'Movilidad', 'Gimnasia'],
     benefits: [
-      'Ganancias de fuerza y masa muscular',
-      'Mejora la composición corporal',
-      'Desarrollo muscular simétrico',
-      'Progresión medible en levantamientos',
-      'Equilibrio entre estética y rendimiento',
+      'Mejora de la fuerza general',
+      'Aumento de la resistencia cardiovascular',
+      'Mejor composición corporal',
+      'Desarrollo de coordinación, equilibrio y agilidad',
+      'Mejora de la movilidad y control corporal',
+      'Motivación gracias al entrenamiento en comunidad',
+      'Superación personal constante',
     ],
-    idealFor: 'Quienes buscan verse bien y ser fuertes al mismo tiempo.',
+    coachMethod: 'El coach guía la clase desde el calentamiento hasta el entrenamiento principal, adaptando los ejercicios al nivel de cada alumno. Corrige técnica, regula la intensidad, propone escalas y cuida que todos entrenen de forma segura. Motiva al grupo y asegura que todos puedan participar sin importar su experiencia.',
+    salesText: 'CrossFit es para quienes quieren entrenar fuerte, mejorar su condición física y sentirse parte de una comunidad. No necesitas estar en forma para empezar; empiezas para ponerte en forma.',
     duration: '60 min',
-    intensity: 'Media-Alta',
-  },
-  {
-    id: 'gap',
-    name: 'GAP 2.0',
-    shortDesc: 'Tono localizado. Enfoque en glúteos, abdomen y piernas.',
-    color: '#2ECC71',
-    icon: 'target',
-    fullDescription: `GAP 2.0 es un programa de entrenamiento focalizado en las zonas más demandadas:
-    glúteos, abdomen y piernas. Combina ejercicios de fuerza, resistencia y tonificación para
-    esculpir y fortalecer estas áreas específicas.`,
-    benefits: [
-      'Tonificación muscular localizada',
-      'Fortalecimiento del core',
-      'Mejora la postura y estabilidad',
-      'Quema de grasa localizada',
-      'Aumento de la resistencia muscular',
-    ],
-    idealFor: 'Personas que quieren tonificar y fortalecer glúteos, abdomen y piernas.',
-    duration: '60 min',
-    intensity: 'Media',
+    intensity: 'Alta',
   },
   {
     id: 'endurance',
     name: 'ENDURANCE',
-    shortDesc: 'Motor inagotable. Máxima salud cardiovascular y quema calórica.',
+    shortDesc: 'Resistencia cardiovascular, más energía y mejor rendimiento sostenido.',
     color: '#00BCD4',
     icon: 'heart',
-    fullDescription: `Endurance está diseñado para mejorar tu capacidad cardiovascular y resistencia.
-    A través de entrenamientos de larga duración y moderada intensidad, desarrollarás un motor
-    que no se detiene, mejorando tu salud cardíaca y quemando calorías eficientemente.`,
+    fullDescription: 'El endurance es una disciplina orientada a mejorar la resistencia cardiovascular y la capacidad de mantener esfuerzos durante más tiempo. Incluye trabajo en remo, bicicleta, ski erg, carrera y otros formatos aeróbicos. Su objetivo es desarrollar mejor eficiencia energética, respiratoria y muscular.',
+    keywords: ['Resistencia', 'Cardio', 'Capacidad aeróbica', 'Zona 2', 'Intervalos', 'Eficiencia', 'Energía', 'Fatiga'],
     benefits: [
-      'Mejora la salud cardiovascular',
-      'Aumenta la capacidad pulmonar',
-      'Alta quema calórica',
-      'Reduce el estrés y mejora el ánimo',
-      'Aumenta la resistencia general',
+      'Mejora de la resistencia cardiovascular',
+      'Mayor capacidad pulmonar y control respiratorio',
+      'Mejor tolerancia a la fatiga',
+      'Aumento de la energía diaria',
+      'Mejora de la recuperación entre entrenamientos',
+      'Reducción del cansancio en actividades cotidianas',
+      'Apoyo en la pérdida de grasa corporal',
     ],
-    idealFor: 'Quienes buscan mejorar su condición física general y salud del corazón.',
+    coachMethod: 'El coach controla la intensidad mediante tiempos, ritmos y zonas de esfuerzo. Planifica bloques progresivos para que el alumno mejore sin agotarse en exceso. Enseña a regular el ritmo, respirar mejor, distribuir la energía y entender cuándo acelerar o mantener un esfuerzo controlado.',
+    salesText: 'Endurance es ideal si quieres mejorar tu resistencia, sentirte con más energía y rendir mejor dentro y fuera del entrenamiento. Aprende a controlar tu ritmo y a superar tus límites de manera inteligente.',
+    duration: '60 min',
+    intensity: 'Media',
+  },
+  {
+    id: 'gap',
+    name: 'GAP',
+    shortDesc: 'Glúteos, abdomen y piernas. Tonificación, fuerza localizada y estabilidad.',
+    color: '#2ECC71',
+    icon: 'target',
+    fullDescription: 'El GAP es una disciplina enfocada en el trabajo de glúteos, abdominales y piernas. Su objetivo es fortalecer, tonificar y mejorar la resistencia muscular del tren inferior y la zona media. Es una clase dinámica, accesible y adaptable, ideal para quienes buscan mejorar su composición corporal, estabilidad y fuerza localizada.',
+    keywords: ['Glúteos', 'Abdominales', 'Piernas', 'Tonificación', 'Core', 'Estabilidad', 'Tren inferior', 'Postura'],
+    benefits: [
+      'Fortalecimiento de glúteos, piernas y abdomen',
+      'Mejora de la estabilidad de cadera y zona media',
+      'Mayor resistencia muscular',
+      'Mejor postura y control corporal',
+      'Apoyo en objetivos estéticos y funcionales',
+      'Mayor fuerza en movimientos cotidianos',
+      'Mejora del tono muscular',
+    ],
+    coachMethod: 'El coach selecciona ejercicios específicos cuidando la técnica y la correcta activación muscular. Corrige la postura en sentadillas, zancadas, puentes de glúteo, planchas y trabajos con bandas. Adapta la intensidad según el nivel del alumno, utilizando peso corporal, bandas, mancuernas o cargas progresivas.',
+    salesText: 'GAP es perfecto si quieres fortalecer glúteos, abdomen y piernas de forma efectiva, segura y entretenida. Una clase pensada para sentir el trabajo, mejorar tu cuerpo y moverte con más seguridad.',
     duration: '60 min',
     intensity: 'Media',
   },
@@ -233,52 +242,87 @@ function DisciplineModal({ discipline, isOpen, onClose }) {
 
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
               <div className="grid gap-8 lg:grid-cols-2">
-                <div className="space-y-6">
+                <div className="space-y-5">
                   <div>
-                    <h3 className="mb-3 font-heading text-2xl text-primary">Descripción</h3>
+                    <h3 className="mb-2 font-heading text-xl text-primary">Descripción</h3>
                     <p className="leading-relaxed text-primary/70">{discipline.fullDescription}</p>
                   </div>
 
                   <div>
-                    <h3 className="mb-3 font-heading text-2xl text-primary">Ideal para</h3>
-                    <p className="leading-relaxed text-primary/70">{discipline.idealFor}</p>
+                    <h3 className="mb-3 font-heading text-xl text-primary">Palabras clave</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {discipline.keywords.map((kw) => (
+                        <span
+                          key={kw}
+                          className="rounded-full px-3 py-1 text-xs font-semibold"
+                          style={{ backgroundColor: `${discipline.color}20`, color: discipline.color }}
+                        >
+                          {kw}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="mb-2 font-heading text-xl text-primary">Rol del coach</h3>
+                    <p className="leading-relaxed text-primary/70">{discipline.coachMethod}</p>
                   </div>
                 </div>
 
-                <div>
-                  <h3 className="mb-4 font-heading text-2xl text-primary">Beneficios</h3>
-                  <ul className="space-y-3">
-                    {discipline.benefits.map((benefit, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <svg
-                          className="mt-0.5 h-5 w-5 shrink-0"
-                          style={{ color: discipline.color }}
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <span className="text-primary/80">{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="space-y-5">
+                  <div>
+                    <h3 className="mb-3 font-heading text-xl text-primary">Lo que vas a conseguir</h3>
+                    <ul className="space-y-2">
+                      {discipline.benefits.map((benefit) => (
+                        <li key={benefit} className="flex items-start gap-3">
+                          <svg
+                            className="mt-0.5 h-5 w-5 shrink-0"
+                            style={{ color: discipline.color }}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span className="text-sm text-primary/80">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div
+                    className="rounded-xl p-4"
+                    style={{ backgroundColor: `${discipline.color}12`, borderLeft: `3px solid ${discipline.color}` }}
+                  >
+                    <p className="text-sm font-medium italic leading-relaxed text-primary/80">
+                      "{discipline.salesText}"
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="border-t border-primary/10 bg-primary/5 p-6 md:p-8">
-              <a
-                href="#horarios"
-                onClick={onClose}
-                className="btn-fire w-full md:w-auto"
-                style={{ background: `linear-gradient(135deg, ${discipline.color}, ${discipline.color}DD)` }}
-              >
-                Ver horarios de {discipline.name}
-              </a>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={createWhatsAppLink(`Hola BoxKutral! Me interesa ${discipline.name}, quiero agendar mi clase gratis 🔥`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-fire flex-1 justify-center"
+                >
+                  Agenda clase gratis — {discipline.name}
+                </a>
+                <a
+                  href="#horarios"
+                  onClick={onClose}
+                  className="btn-outline flex-1 justify-center"
+                >
+                  Ver horarios
+                </a>
+              </div>
             </div>
           </motion.div>
         </>

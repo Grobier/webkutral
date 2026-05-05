@@ -14,6 +14,7 @@ import FloatingWhatsApp from './components/FloatingWhatsApp'
 // Below-fold sections: lazy loaded for faster initial paint
 const Disciplines = lazy(() => import('./components/Disciplines'))
 const Coaches = lazy(() => import('./components/Coaches'))
+const Services = lazy(() => import('./components/Services'))
 const Schedules = lazy(() => import('./components/Schedules'))
 const Plans = lazy(() => import('./components/Plans'))
 const Testimonials = lazy(() => import('./components/Testimonials'))
@@ -51,6 +52,11 @@ function App() {
         {/* Coaches Section - Team with photos and videos */}
         <Suspense fallback={<SectionFallback />}>
           <Coaches />
+        </Suspense>
+
+        {/* Services Section - Kinesiología y Nutrición */}
+        <Suspense fallback={<SectionFallback />}>
+          <Services />
         </Suspense>
 
         {/* Schedules Section - Tab-based schedule grid */}
