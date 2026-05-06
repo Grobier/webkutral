@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import EmberParticles from './EmberParticles'
 import { WHATSAPP_BASE_LINK } from '../constants'
@@ -74,16 +75,19 @@ function ServiceModal({ service, onClose }) {
     return () => document.removeEventListener('keydown', onKey)
   }, [onClose])
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
+        key="backdrop"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
         onClick={onClose}
         className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
       />
       <motion.div
+        key="panel"
         role="dialog"
         aria-modal="true"
         aria-labelledby="service-modal-title"
@@ -162,7 +166,8 @@ function ServiceModal({ service, onClose }) {
           </a>
         </div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   )
 }
 
@@ -270,9 +275,7 @@ export default function Services() {
         </motion.div>
       </div>
 
-      <AnimatePresence>
-        {selected && <ServiceModal service={selected} onClose={() => setSelected(null)} />}
-      </AnimatePresence>
+      {selected && <ServiceModal service={selected} onClose={() => setSelected(null)} />}
     </section>
   )
 }
