@@ -42,7 +42,7 @@ const plans = [
       { text: 'Matrícula GRATIS', highlight: true },
       { text: 'Clases ILIMITADAS' },
       { text: 'Acceso a todas las disciplinas' },
-      { text: 'Tarjeta Socio (regalo exclusivo)' },
+
       { text: 'Medición y Nutrición' },
       { text: 'Recovery incluido' },
     ],

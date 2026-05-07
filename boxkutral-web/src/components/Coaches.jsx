@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 
 const coaches = [
@@ -210,19 +211,22 @@ function CoachModal({ coach, isOpen, onClose }) {
 
   if (!coach) return null
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
           <motion.div
+            key="backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={onClose}
             className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
           />
 
           <motion.div
+            key="panel"
             ref={modalRef}
             role="dialog"
             aria-modal="true"
@@ -231,14 +235,12 @@ function CoachModal({ coach, isOpen, onClose }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed left-1/2 top-1/2 z-50 flex w-[calc(100vw-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-primary/10 bg-secondary shadow-2xl"
+            className="fixed left-1/2 top-1/2 z-50 flex w-[calc(100vw-2rem)] max-w-2xl max-h-[90vh] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-primary/10 bg-secondary shadow-2xl"
           >
-            <div className="flex items-start justify-between border-b border-primary/10 p-6 md:p-8">
+            <div className="flex shrink-0 items-start justify-between border-b border-primary/10 p-6 md:p-8">
               <div>
                 <h2 id="coach-modal-title" className="font-heading text-3xl text-primary md:text-4xl">{coach.name}</h2>
-                <p style={{ color: coach.color }} className="mt-1 font-medium">
-                  {coach.role}
-                </p>
+                <p style={{ color: coach.color }} className="mt-1 font-medium">{coach.role}</p>
               </div>
               <button
                 ref={closeButtonRef}
@@ -252,7 +254,7 @@ function CoachModal({ coach, isOpen, onClose }) {
               </button>
             </div>
 
-            <div className="overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-6">
               <div className="flex gap-6">
                 <div className="shrink-0">
                   <div className="w-36 overflow-hidden rounded-xl sm:w-44">
@@ -286,12 +288,7 @@ function CoachModal({ coach, isOpen, onClose }) {
                     <ul className="space-y-2">
                       {coach.achievements.map((achievement) => (
                         <li key={achievement} className="flex items-center gap-3 text-primary/70">
-                          <svg
-                            className="h-5 w-5 shrink-0"
-                            style={{ color: coach.color }}
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
+                          <svg className="h-5 w-5 shrink-0" style={{ color: coach.color }} fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                           </svg>
                           <span>{achievement}</span>
@@ -305,7 +302,8 @@ function CoachModal({ coach, isOpen, onClose }) {
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   )
 }
 

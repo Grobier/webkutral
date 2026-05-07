@@ -15,6 +15,7 @@ const services = [
     emoji: '🦴',
     logo: '/services/fisiomove-logo.png',
     photo: '/services/fisiomove-photo.png',
+    photoPosition: 'object-top',
     whatsapp: `${WHATSAPP_BASE_LINK}?text=${encodeURIComponent('Hola! Quiero más información sobre FisioMove en BoxKutral 🦴')}`,
     offerings: [
       { title: 'Evaluación kinesiológica', desc: 'Diagnóstico funcional completo para identificar la raíz de la lesión o limitación.' },
@@ -31,7 +32,8 @@ const services = [
     color: '#2ECC71',
     emoji: '🥗',
     logo: '/services/nutsport-logo.png',
-    photo: '/services/nutsport-photo.jpg',
+    photo: '/services/nutsport-photo.png',
+    photoPosition: 'object-center',
     whatsapp: `${WHATSAPP_BASE_LINK}?text=${encodeURIComponent('Hola! Quiero más información sobre NutSport en BoxKutral 🥗')}`,
     offerings: [
       { title: 'Evaluación antropométrica deportiva', desc: 'Medición de composición corporal (masa muscular, grasa, agua) para trazar objetivos reales.' },
@@ -50,7 +52,7 @@ function ServiceLogo({ src, name, color }) {
   )
 }
 
-function ServicePhoto({ src, name }) {
+function ServicePhoto({ src, name, position = 'object-center' }) {
   const [error, setError] = useState(false)
   if (!src || error) {
     return <div className="flex h-full items-center justify-center text-6xl opacity-20">📷</div>
@@ -59,7 +61,7 @@ function ServicePhoto({ src, name }) {
     <img
       src={src}
       alt={name}
-      className="h-full w-full object-cover object-top"
+      className={`h-full w-full object-cover ${position}`}
       onError={() => setError(true)}
     />
   )
@@ -95,11 +97,11 @@ function ServiceModal({ service, onClose }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.92, y: 24 }}
         transition={{ type: 'spring', damping: 26, stiffness: 280 }}
-        className="fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-white/10 bg-secondary shadow-2xl"
+        className="fixed left-1/2 top-1/2 z-50 flex w-[calc(100vw-2rem)] max-w-2xl max-h-[90vh] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-white/10 bg-secondary shadow-2xl"
       >
         {/* Photo header */}
         <div className="relative h-56 w-full sm:h-72" style={{ background: `${service.color}10` }}>
-          <ServicePhoto src={service.photo} name={service.brand} />
+          <ServicePhoto src={service.photo} name={service.brand} position={service.photoPosition} />
           <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/20 to-transparent" />
 
           {/* Close */}
@@ -126,7 +128,7 @@ function ServiceModal({ service, onClose }) {
         </div>
 
         {/* Content */}
-        <div className="overflow-y-auto px-6 pb-8 pt-4 sm:px-8">
+        <div className="flex-1 overflow-y-auto px-6 pb-8 pt-4 sm:px-8">
           <div className="mb-5 flex items-start justify-between gap-4">
             <div>
               <ServiceLogo src={service.logo} name={service.brand} color={service.color} />

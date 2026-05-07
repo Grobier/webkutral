@@ -10,6 +10,13 @@ const disciplines = [
   { id: 'gap', name: 'GAP 2.0', color: '#2ECC71' },
   { id: 'endurance', name: 'Endurance', color: '#00BCD4' },
   { id: 'powerbuilding', name: 'Powerbuilding', color: '#9B59B6' },
+  { id: 'openbox', name: 'Open Box', color: '#FACC15' },
+]
+
+const openBoxHours = [
+  { days: 'Lunes · Miércoles · Viernes', from: '6:00', to: '22:00' },
+  { days: 'Martes · Jueves', from: '6:00', to: '19:00' },
+  { days: 'Sábado', from: '8:00', to: '13:00' },
 ]
 
 const scheduleData = {
@@ -19,16 +26,15 @@ const scheduleData = {
       '7:00': [true, true, true, true, true, false],
       '8:00': [true, true, true, true, true, false],
       '9:00': [false, false, false, false, false, false],
-      '10:00': [false, false, false, false, false, false],
-      '11:00': [false, false, false, false, false, '90 Min'],
-      '12:00': [true, false, true, false, true, false],
+      '10:00': [false, false, false, false, false, '90 Min'],
+      '11:00': [false, false, false, false, false, false],
+      '12:00': [false, false, false, true, false, false],
     },
     pm: {
-      '17:00': [true, true, true, true, true, false],
-      '18:00': [true, false, true, true, true, false],
+      '18:00': [true, false, false, false, false, false],
       '19:00': [true, true, true, true, true, false],
-      '20:00': [true, true, false, true, false, false],
-      '21:00': [true, true, false, true, false, false],
+      '20:00': [true, true, true, true, true, false],
+      '21:00': [true, true, true, true, false, false],
     },
   },
   halterofilia: {
@@ -57,7 +63,7 @@ const scheduleData = {
       '9:00': [false, false, false, false, false, false],
       '10:00': [false, false, false, false, false, false],
       '11:00': [false, false, false, false, false, false],
-      '12:00': [false, true, false, false, true, false],
+      '12:00': [false, false, false, false, true, false],
     },
     pm: {
       '17:00': [false, false, false, false, false, false],
@@ -75,7 +81,7 @@ const scheduleData = {
       '9:00': [false, false, false, false, false, false],
       '10:00': [false, false, false, false, false, false],
       '11:00': [false, false, false, false, false, false],
-      '12:00': [false, false, true, false, false, false],
+      '12:00': [false, false, false, false, false, false],
     },
     pm: {
       '17:00': [false, false, false, false, false, false],
@@ -120,6 +126,44 @@ function ScheduleSlot({ value, color }) {
   )
 }
 
+function OpenBoxSchedule({ color }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3 mb-6">
+        <span className="h-3 w-3 rounded-full animate-pulse" style={{ backgroundColor: color }} />
+        <p className="text-sm font-semibold uppercase tracking-widest" style={{ color }}>
+          Acceso libre al box
+        </p>
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-secondary/10">
+        <table className="w-full">
+          <thead>
+            <tr style={{ backgroundColor: `${color}15` }}>
+              <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-widest text-secondary/60">Días</th>
+              <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-widest" style={{ color }}>Desde</th>
+              <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-widest text-secondary/60">Hasta</th>
+            </tr>
+          </thead>
+          <tbody>
+            {openBoxHours.map((row, i) => (
+              <tr key={i} className={i % 2 === 0 ? 'bg-secondary/3' : ''}>
+                <td className="px-5 py-4 font-semibold text-secondary">{row.days}</td>
+                <td className="px-5 py-4 text-center text-xl font-bold" style={{ color }}>{row.from}</td>
+                <td className="px-5 py-4 text-center text-xl font-bold text-secondary">{row.to}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p className="text-sm text-secondary/40 pt-2">
+        * Acceso libre sin reserva previa durante el horario indicado.
+      </p>
+    </div>
+  )
+}
+
 function MobileScheduleGrid({ disciplineId, color }) {
   const data = scheduleData[disciplineId]
   const [selectedDay, setSelectedDay] = useState(0)
@@ -158,7 +202,9 @@ function MobileScheduleGrid({ disciplineId, color }) {
               className="flex items-center gap-3 rounded-xl px-4 py-3"
               style={{ backgroundColor: `${color}15` }}
             >
-              <span className="w-12 text-sm font-medium text-secondary/60">{hour}</span>
+              <span className="text-sm font-medium text-secondary/60">
+                {hour} <span className="text-[10px] text-secondary/35">{block}</span>
+              </span>
               <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
               <span className="flex-1 text-sm font-medium text-secondary">
                 {typeof slot === 'string' ? slot : 'Clase disponible'}
@@ -195,7 +241,10 @@ function ScheduleTable({ data, block, color }) {
         <tbody>
           {Object.entries(rows).map(([hour, slots]) => (
             <tr key={hour}>
-              <td className="py-1 pl-3 text-xs font-medium text-secondary/70">{hour}</td>
+              <td className="py-1 pl-3 text-xs font-medium text-secondary/70">
+                {hour}
+                <span className="ml-1 text-[10px] text-secondary/40">{block.toUpperCase()}</span>
+              </td>
               {slots.map((slot, idx) => (
                 <td key={idx} className="px-0.5 py-0.5">
                   <ScheduleSlot value={slot} color={color} />
@@ -210,6 +259,8 @@ function ScheduleTable({ data, block, color }) {
 }
 
 function ScheduleGrid({ disciplineId, color }) {
+  if (disciplineId === 'openbox') return <OpenBoxSchedule color={color} />
+
   const data = scheduleData[disciplineId]
 
   return (

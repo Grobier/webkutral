@@ -53,18 +53,10 @@ export default function Hero() {
           {/* Main title */}
           <h1 className="font-impact leading-[1.05]">
             <span className="block text-5xl text-primary sm:text-6xl lg:text-7xl xl:text-8xl">
-              AYUDAMOS A PERSONAS
+              TU MEJOR VERSIÓN
             </span>
             <span className="block text-5xl sm:text-6xl lg:text-7xl xl:text-8xl">
-              A SENTIRSE{' '}
-              <span className="gradient-fire-text">MÁS FUERTES,</span>
-            </span>
-            <span className="block text-5xl sm:text-6xl lg:text-7xl xl:text-8xl">
-              <span className="gradient-fire-text">VERSE MEJOR</span>{' '}
-              <span className="text-primary">Y VIVIR</span>
-            </span>
-            <span className="block text-5xl text-primary sm:text-6xl lg:text-7xl xl:text-8xl">
-              CON MÁS ENERGÍA
+              <span className="gradient-fire-text">EMPIEZA AQUÍ</span>
             </span>
           </h1>
 
@@ -81,7 +73,7 @@ export default function Hero() {
             {...fade(0.3)}
             className="mx-auto max-w-xl text-lg leading-relaxed text-primary/80 sm:text-xl"
           >
-            El fuego que buscabas está aquí. Entrena con propósito y alcanza tu mejor versión.
+            Te ayudamos a sentirte fuerte, verte mejor y vivir con más energía.
           </motion.p>
 
           {/* CTA Buttons */}
