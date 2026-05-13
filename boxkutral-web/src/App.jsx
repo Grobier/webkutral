@@ -10,6 +10,7 @@ import { lazy, Suspense } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import FloatingWhatsApp from './components/FloatingWhatsApp'
+import CompetitionPopup from './components/CompetitionPopup'
 
 // Below-fold sections: lazy loaded for faster initial paint
 const Disciplines = lazy(() => import('./components/Disciplines'))
@@ -87,6 +88,9 @@ function App() {
 
       {/* Floating WhatsApp CTA */}
       <FloatingWhatsApp />
+
+      {/* Competition Popup */}
+      <CompetitionPopup />
     </div>
   )
 }
