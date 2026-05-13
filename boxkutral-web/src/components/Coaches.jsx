@@ -268,30 +268,42 @@ function CoachModal({ coach, isOpen, onClose }) {
 }
 
 export default function Coaches() {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [active, setActive] = useState(0)
   const [selectedCoach, setSelectedCoach] = useState(null)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const lastHover = useRef(0)
 
-  const paginate = (dir) => {
-    setCurrentIndex((prev) => (prev + dir + coaches.length) % coaches.length)
+  const getSlot = (i) => {
+    const diff = ((i - active) + coaches.length) % coaches.length
+    return diff > coaches.length / 2 ? diff - coaches.length : diff
   }
 
-  const getPos = (index) => {
-    const diff = ((index - currentIndex) + coaches.length) % coaches.length
-    return diff > coaches.length / 2 ? diff - coaches.length : diff
+  const getFlex = (slot) => {
+    if (slot === 0) return 5
+    if (Math.abs(slot) === 1) return 1.2
+    if (Math.abs(slot) === 2) return 0.55
+    return 0
+  }
+
+  const handleHover = (i, isCenter, visible) => {
+    if (isCenter || !visible) return
+    const now = Date.now()
+    if (now - lastHover.current < 420) return
+    lastHover.current = now
+    setActive(i)
   }
 
   return (
     <section id="profesores" className="relative bg-secondary py-24 lg:py-32 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
-          className="mb-16 text-center lg:mb-20"
+          className="mb-12 text-center lg:mb-16"
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-fire-orange">
             Conoce al equipo
@@ -304,135 +316,102 @@ export default function Coaches() {
           </p>
         </motion.div>
 
-        {/* Carousel */}
-        <div className="relative flex items-center justify-center">
-          {/* Arrow izquierda */}
-          <button
-            onClick={() => paginate(-1)}
-            className="absolute left-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-secondary/80 text-primary backdrop-blur-sm transition-all hover:border-fire-orange hover:text-fire-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fire-orange sm:left-2"
-            aria-label="Coach anterior"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+        {/* Peekaboo carousel */}
+        <div className="relative">
 
-          {/* Cards */}
-          <div className="relative flex h-[540px] w-full items-center justify-center sm:h-[620px] lg:h-[680px]">
-            {coaches.map((coach, index) => {
-              const pos = getPos(index)
-              const isCenter = pos === 0
-              const isPrev = pos === -1
-              const isNext = pos === 1
-              if (!isCenter && !isPrev && !isNext) return null
+          {/* Expanding strips carousel */}
+        <div className="flex h-[520px] gap-2 overflow-hidden rounded-2xl sm:h-[580px] lg:h-[640px]">
+          {coaches.map((coach, i) => {
+            const slot    = getSlot(i)
+            const isCenter = slot === 0
+            const flex    = getFlex(slot)
+            const visible = flex > 0
 
-              return (
-                <motion.div
-                  key={coach.id}
-                  animate={{
-                    x: pos * 175,
-                    scale: isCenter ? 1 : 0.82,
-                    opacity: isCenter ? 1 : 0.45,
-                    zIndex: isCenter ? 10 : 3,
+            return (
+              <div
+                key={coach.id}
+                onClick={() => isCenter && setSelectedCoach(coach)}
+                onMouseEnter={() => handleHover(i, isCenter, visible)}
+                className="relative cursor-pointer overflow-hidden rounded-2xl"
+                style={{
+                  flexGrow: flex,
+                  flexShrink: 1,
+                  flexBasis: 0,
+                  opacity: visible ? 1 : 0,
+                  transition: 'flex-grow 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
+                  minWidth: 0,
+                  pointerEvents: visible ? 'auto' : 'none',
+                }}
+              >
+                {/* Foto */}
+                <div className="h-full w-full">
+                  <CoachImage coach={coach} />
+                </div>
+
+                {/* Overlay oscuro en laterales */}
+                <div
+                  className="absolute inset-0 transition-opacity duration-500"
+                  style={{ backgroundColor: `rgba(0,0,0,${isCenter ? 0 : 0.45})` }}
+                />
+
+                {/* Gradiente base abajo */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
+
+                {/* Glow color centro */}
+                <div
+                  className="absolute inset-0 transition-opacity duration-500"
+                  style={{
+                    background: `linear-gradient(to top, ${coach.color}45 0%, transparent 55%)`,
+                    opacity: isCenter ? 1 : 0,
                   }}
-                  whileHover={
-                    !isCenter
-                      ? { opacity: 0.85, scale: 0.88 }
-                      : {}
-                  }
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  className="absolute w-72 cursor-pointer select-none sm:w-80 lg:w-[22rem]"
-                  onClick={() => {
-                    if (isCenter) setSelectedCoach(coach)
-                    else paginate(isPrev ? -1 : 1)
+                />
+
+                {/* Borde color centro */}
+                <div
+                  className="absolute inset-0 rounded-2xl transition-opacity duration-500"
+                  style={{
+                    boxShadow: `inset 0 0 0 2px ${coach.color}`,
+                    opacity: isCenter ? 1 : 0,
                   }}
+                />
+
+                {/* Info centro */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 p-6 transition-all duration-500"
+                  style={{ opacity: isCenter ? 1 : 0, transform: isCenter ? 'translateY(0)' : 'translateY(12px)' }}
                 >
-                  <div
-                    className="overflow-hidden rounded-2xl shadow-2xl transition-colors duration-300"
-                    style={{
-                      border: isCenter
-                        ? `2px solid ${coach.color}60`
-                        : '2px solid transparent',
-                    }}
-                  >
-                    <div className="relative aspect-[3/4] overflow-hidden">
-                      <CoachImage coach={coach} />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-
-                      {/* Info superpuesta — siempre visible */}
-                      <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <h3
-                          className="font-heading text-lg text-white sm:text-xl"
-                          style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
-                        >
-                          {coach.name}
-                        </h3>
-                        {isCenter && (
-                          <>
-                            <p className="mt-0.5 text-xs text-white/60 leading-snug">{coach.role}</p>
-                            <div className="mt-2 flex flex-wrap gap-1.5">
-                              {coach.specialties.map((s) => (
-                                <span
-                                  key={s}
-                                  className="rounded px-2 py-0.5 text-xs font-medium"
-                                  style={{ backgroundColor: `${coach.color}35`, color: coach.color }}
-                                >
-                                  {s}
-                                </span>
-                              ))}
-                            </div>
-                            <p className="mt-3 flex items-center gap-1 text-xs font-semibold text-fire-orange">
-                              Ver perfil completo
-                              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </p>
-                          </>
-                        )}
-                        {!isCenter && (
-                          <p className="mt-1 text-[11px] text-white/40">{coach.specialties[0]}</p>
-                        )}
-                      </div>
-
-                      {/* Hover overlay color en side cards */}
-                      {!isCenter && (
-                        <div
-                          className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"
-                          style={{ background: `linear-gradient(to top, ${coach.color}50, transparent 60%)` }}
-                        />
-                      )}
-                    </div>
+                  <h3 className="font-heading text-3xl text-white lg:text-4xl">{coach.name}</h3>
+                  <p className="mt-1 text-sm text-white/55">{coach.role}</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {coach.specialties.map((s) => (
+                      <span key={s} className="rounded-full px-3 py-1 text-xs font-semibold"
+                        style={{ backgroundColor: `${coach.color}30`, color: coach.color }}>
+                        {s}
+                      </span>
+                    ))}
                   </div>
-                </motion.div>
-              )
-            })}
-          </div>
-
-          {/* Arrow derecha */}
-          <button
-            onClick={() => paginate(1)}
-            className="absolute right-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-secondary/80 text-primary backdrop-blur-sm transition-all hover:border-fire-orange hover:text-fire-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fire-orange sm:right-2"
-            aria-label="Coach siguiente"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+                  <p className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-fire-orange">
+                    Ver perfil completo
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </p>
+                </div>
+              </div>
+            )
+          })}
         </div>
 
-        {/* Dots */}
-        <div className="mt-8 flex justify-center gap-2">
+        {/* Dots solo — sin flechas */}
+        <div className="mt-5 flex justify-center gap-2">
           {coaches.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentIndex(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === currentIndex ? 'w-8 bg-fire-orange' : 'w-2 bg-primary/25 hover:bg-primary/50'
-              }`}
-              aria-label={`Ir al coach ${i + 1}`}
-            />
+            <button key={i} onClick={() => setActive(i)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? 'w-8 bg-fire-orange' : 'w-1.5 bg-primary/25 hover:bg-primary/50'}`}
+              aria-label={`Coach ${i + 1}`} />
           ))}
         </div>
+        </div>
+
 
       </div>
 
