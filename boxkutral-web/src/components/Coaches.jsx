@@ -6,8 +6,8 @@ const coaches = [
   {
     id: 1,
     name: 'Robert Bolbarán',
-    role: 'Coach · CrossFit y Halterofilia',
-    specialties: ['CrossFit', 'Halterofilia'],
+    role: 'Coach · Halterofilia',
+    specialties: ['Halterofilia'],
     bio: 'Combina lo mejor del entrenamiento funcional con la técnica olímpica. Guía cada sesión adaptando la intensidad y corrigiendo en detalle para que progreses sin importar tu nivel.',
     achievements: [
       'Fuerza explosiva y coordinación con la barra',
@@ -118,8 +118,8 @@ const coaches = [
   {
     id: 8,
     name: 'María José',
-    role: 'Coach · CrossFit, GAP y Endurance',
-    specialties: ['CrossFit', 'GAP', 'Endurance'],
+    role: 'Coach · CrossFit, GAP, Endurance y Powerbuilding',
+    specialties: ['CrossFit', 'GAP', 'Endurance', 'Powerbuilding'],
     bio: 'Clases con energía, técnica y propósito. Desde fortalecer el tren inferior y el core hasta mejorar la resistencia cardiovascular, siempre con foco en que sientas el trabajo y veas resultados.',
     achievements: [
       'Tonificación de glúteos, abdomen y piernas',
