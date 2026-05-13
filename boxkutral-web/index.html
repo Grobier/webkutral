@@ -5,48 +5,157 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0A0A0A" />
+
+    <!-- Primary Meta -->
+    <title>BoxKutral | Gym CrossFit y Halterofilia — Santiago, Chile</title>
     <meta
       name="description"
-      content="BoxKutral, centro de entrenamiento de alto rendimiento en Santiago, Chile. CrossFit, Halterofilia, Powerbuilding, GAP 2.0 y Endurance. Primera clase de prueba gratis."
+      content="BoxKutral — gym CrossFit, Halterofilia y Powerbuilding en Santiago, Chile. Coaches certificados, clases todos los niveles. ¡Primera clase de prueba gratis! Planes desde $60.000/mes."
     />
+    <meta name="keywords" content="box crossfit santiago, halterofilia santiago, gym alto rendimiento santiago, crossfit chile, powerbuilding santiago, entrenamiento funcional santiago, gimnasio crossfit santiago, boxkutral" />
     <meta name="robots" content="index, follow" />
+    <meta name="author" content="BoxKutral" />
     <link rel="canonical" href="https://boxkutral.cl" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://boxkutral.cl" />
-    <meta property="og:title" content="BoxKutral | Centro de Entrenamiento — Santiago, Chile" />
-    <meta property="og:description" content="Centro de entrenamiento de alto rendimiento en Santiago. CrossFit, Halterofilia, Powerbuilding, GAP 2.0 y Endurance. Primera clase de prueba gratis." />
+    <meta property="og:title" content="BoxKutral | Gym CrossFit y Halterofilia — Santiago, Chile" />
+    <meta property="og:description" content="Gym CrossFit, Halterofilia y Powerbuilding en Santiago. Coaches certificados, todos los niveles. Primera clase de prueba gratis. Planes desde $60.000/mes." />
     <meta property="og:image" content="https://boxkutral.cl/brand/Logo-escudo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="es_CL" />
     <meta property="og:site_name" content="BoxKutral" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="BoxKutral | Centro de Entrenamiento — Santiago, Chile" />
-    <meta name="twitter:description" content="Centro de entrenamiento de alto rendimiento en Santiago. Primera clase de prueba gratis." />
+    <meta name="twitter:title" content="BoxKutral | Gym CrossFit y Halterofilia — Santiago, Chile" />
+    <meta name="twitter:description" content="Gym CrossFit, Halterofilia y Powerbuilding en Santiago. Primera clase de prueba gratis." />
     <meta name="twitter:image" content="https://boxkutral.cl/brand/Logo-escudo.png" />
 
     <!-- Structured Data: Local Business -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SportsActivityLocation",
+      "@type": ["SportsActivityLocation", "LocalBusiness"],
       "name": "BoxKutral",
       "description": "Centro de entrenamiento de alto rendimiento en Santiago, Chile. CrossFit, Halterofilia, Powerbuilding, GAP 2.0 y Endurance.",
       "url": "https://boxkutral.cl",
       "telephone": "+56976175531",
+      "image": "https://boxkutral.cl/brand/Logo-escudo.png",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Nataniel Cox 1444",
         "addressLocality": "Santiago",
+        "addressRegion": "Región Metropolitana",
+        "postalCode": "8320000",
         "addressCountry": "CL"
       },
       "sameAs": [
         "https://www.instagram.com/boxkutral"
       ],
-      "sport": ["CrossFit", "Halterofilia", "Powerbuilding", "Endurance"],
+      "sport": ["CrossFit", "Halterofilia", "Powerbuilding", "Endurance", "GAP"],
       "priceRange": "$$",
-      "openingHours": "Mo-Fr 06:00-21:00"
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "06:00",
+          "closes": "21:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "08:00",
+          "closes": "13:00"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Planes de entrenamiento",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Plan Fuego",
+            "description": "12 clases al mes, acceso a todas las disciplinas, matrícula gratis",
+            "price": "60000",
+            "priceCurrency": "CLP"
+          },
+          {
+            "@type": "Offer",
+            "name": "Plan Kutral",
+            "description": "16 clases al mes, acceso a todas las disciplinas, matrícula gratis",
+            "price": "65000",
+            "priceCurrency": "CLP"
+          },
+          {
+            "@type": "Offer",
+            "name": "Plan Leyenda",
+            "description": "Clases ilimitadas, acceso a todas las disciplinas, recovery incluido",
+            "price": "90000",
+            "priceCurrency": "CLP"
+          }
+        ]
+      }
+    }
+    </script>
+
+    <!-- Structured Data: FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Tienen clase de prueba gratuita?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. En BoxKutral ofrecemos una primera clase de prueba completamente gratis, sin compromiso. Puedes agendar directamente por WhatsApp al +56 9 7617 5531."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuestan los planes de entrenamiento en BoxKutral?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los planes comienzan desde $60.000/mes (Plan Fuego, 12 clases mensuales). El Plan Kutral incluye 16 clases por $65.000/mes. El Plan Leyenda ofrece clases ilimitadas por $90.000/mes. Todos incluyen matrícula gratis y acceso a todas las disciplinas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué disciplinas ofrece BoxKutral?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BoxKutral ofrece CrossFit, Halterofilia, Powerbuilding, GAP 2.0 y Endurance. Además contamos con servicios complementarios de Kinesiología deportiva (FisioMove) y Nutrición deportiva (NutSport)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuáles son los horarios del box?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "De lunes a viernes hay clases desde las 6:00 hasta las 21:00. Los sábados de 8:00 a 13:00. El Open Box (acceso libre) funciona de lunes y miércoles y viernes de 6:00 a 22:00, martes y jueves de 6:00 a 19:00, y sábados de 8:00 a 13:00."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿BoxKutral es apto para principiantes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. En BoxKutral entrenamos todos los niveles. Nuestros coaches adaptan cada clase para que tanto principiantes como atletas avanzados progresen de forma segura y efectiva."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Dónde está ubicado BoxKutral?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BoxKutral está ubicado en Nataniel Cox 1444, Santiago, Región Metropolitana, Chile. Contáctanos por WhatsApp al +56 9 7617 5531 o por Instagram @boxkutral."
+          }
+        }
+      ]
     }
     </script>
 
@@ -70,8 +179,6 @@
         rel="stylesheet"
       />
     </noscript>
-
-    <title>BoxKutral | Centro de Entrenamiento — Santiago, Chile</title>
   </head>
   <body>
     <div id="root"></div>

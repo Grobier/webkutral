@@ -82,9 +82,9 @@ export default function Footer() {
                   {PHONE_DISPLAY}
                 </a>
               </li>
-              <li className="flex items-center gap-2 text-primary/50">
+              <li className="flex items-start gap-2 text-primary/50">
                 <LocationIcon />
-                Santiago, Chile
+                <span>Nataniel Cox 1444,<br />Santiago, Chile</span>
               </li>
             </ul>
           </div>
