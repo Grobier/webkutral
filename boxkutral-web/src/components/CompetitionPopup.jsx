@@ -33,9 +33,9 @@ export default function CompetitionPopup() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.15 }}
               onClick={minimize}
-              className="fixed inset-0 z-[60] bg-black/75 backdrop-blur-sm"
+              className="fixed inset-0 z-[60] bg-black/80"
             />
 
             <motion.div
@@ -43,10 +43,10 @@ export default function CompetitionPopup() {
               role="dialog"
               aria-modal="true"
               aria-label="Competencia de Halterofilia en BoxKutral"
-              initial={{ opacity: 0, scale: 0.9, y: 24 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 24 }}
-              transition={{ type: 'spring', damping: 22, stiffness: 300 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
               className="fixed left-1/2 top-1/2 z-[61] w-[calc(100vw-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-white/10 bg-secondary shadow-2xl"
             >
               {/* Header */}
