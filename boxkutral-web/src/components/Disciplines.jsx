@@ -28,6 +28,7 @@ const disciplines = [
   {
     id: 'halterofilia',
     name: 'HALTEROFILIA',
+    hasModal: false,
     shortDesc: 'Arranque y envión. Fuerza explosiva, velocidad y precisión técnica.',
     color: '#F0B400',
     icon: 'weightlifting',
@@ -366,7 +367,7 @@ export default function Disciplines() {
               <DisciplineCard
                 key={discipline.id}
                 discipline={discipline}
-                onClick={() => setSelectedDiscipline(discipline)}
+                onClick={discipline.hasModal === false ? undefined : () => setSelectedDiscipline(discipline)}
               />
             ))}
           </div>
@@ -376,7 +377,7 @@ export default function Disciplines() {
               <DisciplineCard
                 key={discipline.id}
                 discipline={discipline}
-                onClick={() => setSelectedDiscipline(discipline)}
+                onClick={discipline.hasModal === false ? undefined : () => setSelectedDiscipline(discipline)}
               />
             ))}
           </div>
@@ -393,8 +394,14 @@ export default function Disciplines() {
 }
 
 function DisciplineCard({ discipline, onClick }) {
+  const isInteractive = typeof onClick === 'function'
+
   return (
-    <motion.div variants={cardVariants} onClick={onClick} className="group cursor-pointer">
+    <motion.div
+      variants={cardVariants}
+      onClick={onClick}
+      className={`group ${isInteractive ? 'cursor-pointer' : 'cursor-default'}`}
+    >
       <div
         className="h-full rounded-xl border border-secondary/10 bg-secondary/[0.03] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-secondary/20 hover:bg-secondary/[0.06] hover:shadow-lg"
         style={{ boxShadow: `0 0 0 0 ${discipline.color}00` }}
@@ -431,15 +438,17 @@ function DisciplineCard({ discipline, onClick }) {
 
         <p className="mb-4 text-sm leading-relaxed text-secondary/70">{discipline.shortDesc}</p>
 
-        <div
-          className="inline-flex items-center gap-2 text-sm font-medium opacity-50 transition-all duration-300 group-hover:opacity-100"
-          style={{ color: discipline.color }}
-        >
-          <span>Ver detalles</span>
-          <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
+        {isInteractive && (
+          <div
+            className="inline-flex items-center gap-2 text-sm font-medium opacity-50 transition-all duration-300 group-hover:opacity-100"
+            style={{ color: discipline.color }}
+          >
+            <span>Ver detalles</span>
+            <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        )}
       </div>
     </motion.div>
   )
