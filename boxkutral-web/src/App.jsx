@@ -18,6 +18,7 @@ const Services = lazy(() => import('./components/Services'))
 const Schedules = lazy(() => import('./components/Schedules'))
 const Plans = lazy(() => import('./components/Plans'))
 const Testimonials = lazy(() => import('./components/Testimonials'))
+const FAQ = lazy(() => import('./components/FAQ'))
 const FinalCTA = lazy(() => import('./components/FinalCTA'))
 const Footer = lazy(() => import('./components/Footer'))
 
@@ -72,6 +73,11 @@ function App() {
         {/* Testimonials Section - Client success stories */}
         <Suspense fallback={<SectionFallback />}>
           <Testimonials />
+        </Suspense>
+
+        {/* FAQ Section - Preguntas frecuentes visibles para usuarios y SEO */} 
+        <Suspense fallback={<SectionFallback />}>
+          <FAQ />
         </Suspense>
 
         {/* Final CTA Section - WhatsApp contact */}

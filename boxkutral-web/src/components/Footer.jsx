@@ -8,10 +8,10 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4 lg:col-span-2">
-            <a href="#" className="inline-flex" aria-label="Ir al inicio">
+            <a href="#main-content" className="inline-flex" aria-label="Ir al contenido principal">
               <img
                 src="/brand/Kutral Espalda.png"
-                alt="Kutral"
+                alt="BoxKutral"
                 className="h-12 w-auto object-contain sm:h-14"
               />
             </a>
