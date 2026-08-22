@@ -16,23 +16,59 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('')
   const navRef = useRef(null)
 
-  // Scroll state + active section tracker
+  // Scroll state
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 60)
+    let frameId = 0
 
-      const sections = navLinks.map((l) => l.href.replace('#', ''))
-      for (const id of [...sections].reverse()) {
-        const el = document.getElementById(id)
-        if (el && window.scrollY >= el.offsetTop - 120) {
-          setActiveSection(id)
-          return
-        }
-      }
-      setActiveSection('')
+    const updateScrollState = () => {
+      frameId = 0
+      const next = window.scrollY > 60
+      setIsScrolled((current) => (current === next ? current : next))
     }
+
+    const handleScroll = () => {
+      if (frameId !== 0) return
+      frameId = window.requestAnimationFrame(updateScrollState)
+    }
+
+    handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (frameId !== 0) {
+        window.cancelAnimationFrame(frameId)
+      }
+    }
+  }, [])
+
+  // Active section tracker
+  useEffect(() => {
+    const sections = navLinks
+      .map((link) => document.getElementById(link.href.replace('#', '')))
+      .filter(Boolean)
+
+    if (!sections.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+
+        if (!visible.length) return
+
+        const next = visible[0].target.id
+        setActiveSection((current) => (current === next ? current : next))
+      },
+      {
+        rootMargin: '-35% 0px -45% 0px',
+        threshold: [0.15, 0.35, 0.6],
+      }
+    )
+
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
   }, [])
 
   // Close on outside click
@@ -63,8 +99,8 @@ export default function Navbar() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className={`w-full max-w-6xl transition-all duration-500 ${
           isScrolled
-            ? 'rounded-2xl border border-white/10 bg-secondary/90 shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl'
-            : 'rounded-2xl border border-white/5 bg-secondary/20 backdrop-blur-md'
+            ? 'rounded-2xl border border-white/10 bg-secondary/94 shadow-[0_8px_24px_rgba(0,0,0,0.35)]'
+            : 'rounded-2xl border border-white/5 bg-secondary/72'
         }`}
       >
         <div className="flex h-20 items-center justify-between px-5 sm:px-6">

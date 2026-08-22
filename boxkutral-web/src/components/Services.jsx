@@ -14,7 +14,7 @@ const services = [
     color: '#FF6B00',
     emoji: '🦴',
     logo: '/services/fisiomove-logo.png',
-    photo: '/services/fisiomove-photo.png',
+    photo: '/services/fisiomove-photo.webp',
     photoPosition: 'object-top',
     whatsapp: `${WHATSAPP_BASE_LINK}?text=${encodeURIComponent('Hola! Quiero más información sobre FisioMove en BoxKutral 🦴')}`,
     offerings: [
@@ -32,7 +32,7 @@ const services = [
     color: '#2ECC71',
     emoji: '🥗',
     logo: '/services/nutsport-logo.png',
-    photo: '/services/nutsport-photo.png',
+    photo: '/services/nutsport-photo.webp',
     photoPosition: 'object-center',
     whatsapp: `${WHATSAPP_BASE_LINK}?text=${encodeURIComponent('Hola! Quiero más información sobre NutSport en BoxKutral 🥗')}`,
     offerings: [
@@ -48,7 +48,7 @@ function ServiceLogo({ src, name, color }) {
     return <span className="text-xl font-bold" style={{ color }}>{name}</span>
   }
   return (
-    <img src={src} alt={name} className="h-14 w-auto object-contain" onError={() => setError(true)} />
+    <img src={src} alt={name} className="h-14 w-auto object-contain" loading="lazy" decoding="async" onError={() => setError(true)} />
   )
 }
 
@@ -62,6 +62,8 @@ function ServicePhoto({ src, name, position = 'object-center' }) {
       src={src}
       alt={name}
       className={`h-full w-full object-cover ${position}`}
+      loading="lazy"
+      decoding="async"
       onError={() => setError(true)}
     />
   )
@@ -86,7 +88,7 @@ function ServiceModal({ service, onClose }) {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
         onClick={onClose}
-        className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+        className="fixed inset-0 z-50 bg-black/85"
       />
       <motion.div
         key="panel"
@@ -108,7 +110,7 @@ function ServiceModal({ service, onClose }) {
           <button
             ref={closeRef}
             onClick={onClose}
-            className="absolute right-4 top-4 rounded-full bg-black/40 p-2 text-white/70 backdrop-blur-sm transition hover:bg-black/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-fire-orange"
+            className="absolute right-4 top-4 rounded-full bg-black/55 p-2 text-white/70 transition hover:bg-black/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-fire-orange"
             aria-label="Cerrar"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -177,7 +179,7 @@ function ServiceCard({ service, onClick }) {
   return (
     <motion.button
       onClick={onClick}
-      whileHover={{ scale: 1.02, y: -4 }}
+      whileHover={{ y: -3 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       className="group relative w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 text-left transition-colors duration-300 hover:border-white/20 hover:bg-white/8 focus:outline-none focus:ring-2 focus:ring-fire-orange"
@@ -239,11 +241,11 @@ export default function Services() {
 
   return (
     <section id="servicios" className="relative bg-secondary py-24 lg:py-32 overflow-hidden">
-      <EmberParticles count={10} />
+      <EmberParticles count={4} />
 
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -left-32 top-1/4 h-[500px] w-[500px] rounded-full bg-fire-orange/15 blur-[120px]" />
-        <div className="absolute -right-32 bottom-1/4 h-[400px] w-[400px] rounded-full bg-fire-red/20 blur-[100px]" />
+        <div className="absolute -left-24 top-1/4 h-[320px] w-[320px] rounded-full bg-fire-orange/12 blur-[72px]" />
+        <div className="absolute -right-24 bottom-1/4 h-[260px] w-[260px] rounded-full bg-fire-red/14 blur-[64px]" />
       </div>
 
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">

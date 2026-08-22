@@ -389,3 +389,20 @@ body {
     transform: none;
   }
 }
+
+@media (max-width: 1024px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .ember {
+    animation-duration: 5.5s;
+    opacity: 0.45;
+  }
+}
+
+@media (max-width: 768px) {
+  .ember-container {
+    display: none;
+  }
+}

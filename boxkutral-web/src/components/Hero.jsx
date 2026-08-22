@@ -20,13 +20,13 @@ export default function Hero() {
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-x-hidden gradient-hero">
-      <EmberParticles count={15} />
+      <EmberParticles count={8} />
 
       {/* Decorative blurs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-fire-orange/10 blur-3xl" />
-        <div className="absolute -left-20 bottom-20 h-72 w-72 rounded-full bg-fire-red/5 blur-2xl" />
-        <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fire-orange/5 blur-3xl" />
+        <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-fire-orange/8 blur-2xl" />
+        <div className="absolute -left-16 bottom-20 h-56 w-56 rounded-full bg-fire-red/5 blur-2xl" />
+        <div className="absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fire-orange/4 blur-3xl" />
         <svg className="absolute right-0 top-1/4 h-auto w-1/3 opacity-5" viewBox="0 0 400 400" fill="none" aria-hidden="true">
           <line x1="0" y1="0" x2="400" y2="400" stroke="white" strokeWidth="1" />
           <line x1="100" y1="0" x2="400" y2="300" stroke="white" strokeWidth="1" />

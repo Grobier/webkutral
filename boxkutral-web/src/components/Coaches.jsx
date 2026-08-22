@@ -8,100 +8,103 @@ const coaches = [
     name: 'Robert Bolbarán',
     role: 'Coach · Halterofilia',
     specialties: ['Halterofilia'],
-    bio: '',
-    achievements: [],
+    bio: 'Trabajo técnico orientado a levantar mejor, con más control y progresión sostenible.',
+    achievements: ['Mejorar la técnica del arranque y envión', 'Ganar confianza bajo la barra'],
     metric: 'Halterofilia',
     color: '#FF6B00',
-    image: '/coaches/Robert Bolbaran.png',
+    image: '/coaches/Robert Bolbaran.webp',
   },
   {
     id: 2,
     name: 'Cristian Infantes',
     role: 'Coach · Halterofilia',
     specialties: ['Halterofilia'],
-    bio: '',
-    achievements: [],
+    bio: 'Enfoque en posiciones sólidas, velocidad y detalle técnico para rendir mejor.',
+    achievements: ['Pulir posiciones y recepciones', 'Desarrollar fuerza aplicada al levantamiento'],
     metric: 'Halterofilia',
     color: '#F0B400',
-    image: '/coaches/Cristian Infantes.png',
+    image: '/coaches/Cristian Infantes.webp',
   },
   {
     id: 3,
     name: 'Lorenzo Grobier',
     role: 'Coach · Powerbuilding',
     specialties: ['Powerbuilding'],
-    bio: '',
-    achievements: [],
+    bio: 'Planificación enfocada en fuerza, hipertrofia y progreso medible a largo plazo.',
+    achievements: ['Aumentar fuerza en básicos', 'Construir masa muscular con estructura'],
     metric: 'Powerbuilding',
     color: '#9B59B6',
-    image: '/coaches/Lorenzo Grobier.JPG',
+    image: '/coaches/Lorenzo Grobier.webp',
   },
   {
     id: 4,
     name: 'Camilo Piza',
     role: 'Coach · CrossFit y GAP',
     specialties: ['CrossFit', 'GAP'],
-    bio: '',
-    achievements: [],
+    bio: 'Clases dinámicas con foco en técnica, intensidad bien gestionada y adherencia.',
+    achievements: ['Mejorar capacidad física general', 'Entrenar con intensidad sin perder técnica'],
     metric: 'CrossFit · GAP',
     color: '#C0392B',
-    image: '/coaches/Camilo Piza.png',
+    image: '/coaches/Camilo Piza.webp',
   },
   {
     id: 5,
     name: 'Camilo Martínez',
     role: 'Coach · CrossFit Competitivo',
     specialties: ['CrossFit'],
-    bio: '',
-    achievements: [],
+    bio: 'Preparación enfocada en rendimiento, estrategia y ejecución eficiente en el box.',
+    achievements: ['Mejorar rendimiento competitivo', 'Subir volumen de trabajo con control'],
     metric: 'CrossFit',
     color: '#E67E22',
-    image: '/coaches/Camilo Martínez.png',
+    image: '/coaches/Camilo Martínez.webp',
   },
   {
     id: 6,
     name: 'Samuel Rojas',
     role: 'Coach · CrossFit',
     specialties: ['CrossFit'],
-    bio: '',
-    achievements: [],
+    bio: 'Trabajo técnico y físico orientado a progresar con consistencia en el día a día.',
+    achievements: ['Ganar condición física general', 'Aprender movimientos con seguridad'],
     metric: 'CrossFit',
     color: '#3498DB',
-    image: '/coaches/Samuel Rojas 2.JPG',
+    image: '/coaches/Samuel Rojas 2.webp',
   },
   {
     id: 7,
     name: 'Armando Yancen',
     role: 'Coach · CrossFit y Endurance',
     specialties: ['CrossFit', 'Endurance'],
-    bio: '',
-    achievements: [],
+    bio: 'Entrenamiento pensado para sostener intensidad y mejorar capacidad aeróbica.',
+    achievements: ['Mejorar resistencia y pacing', 'Rendir mejor en sesiones largas'],
     metric: 'CrossFit · Endurance',
     color: '#00BCD4',
-    image: '/coaches/Armando Yancen .jpg',
+    image: '/coaches/Armando Yancen .webp',
   },
   {
     id: 8,
     name: 'María José',
     role: 'Coach · CrossFit, GAP, Endurance y Powerbuilding',
     specialties: ['CrossFit', 'GAP', 'Endurance', 'Powerbuilding'],
-    bio: '',
-    achievements: [],
+    bio: 'Versatilidad total para ayudarte a entrenar mejor según tu objetivo y nivel.',
+    achievements: ['Mejorar adherencia al entrenamiento', 'Combinar fuerza, cardio y tonificación'],
     metric: 'Energía total',
     color: '#2ECC71',
-    image: '/coaches/Cote.JPG',
+    image: '/coaches/Cote.webp',
   },
 ]
 
-function CoachImage({ coach, className = '' }) {
+function CoachImage({ coach, className = '', eager = false }) {
   const [error, setError] = useState(false)
   if (!coach.image || error) return <CoachBadge coach={coach} />
+
   return (
     <img
       src={coach.image}
       alt={coach.name}
       className={`h-full w-full object-cover ${className}`}
       draggable={false}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
       onError={() => setError(true)}
     />
   )
@@ -159,12 +162,17 @@ function CoachModal({ coach, isOpen, onClose }) {
         const first = focusable[0]
         const last = focusable[focusable.length - 1]
         if (e.shiftKey) {
-          if (document.activeElement === first) { e.preventDefault(); last.focus() }
-        } else {
-          if (document.activeElement === last) { e.preventDefault(); first.focus() }
+          if (document.activeElement === first) {
+            e.preventDefault()
+            last.focus()
+          }
+        } else if (document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
         }
       }
     }
+
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onClose])
@@ -180,9 +188,9 @@ function CoachModal({ coach, isOpen, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.18 }}
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-black/85"
           />
 
           <motion.div
@@ -191,16 +199,20 @@ function CoachModal({ coach, isOpen, onClose }) {
             role="dialog"
             aria-modal="true"
             aria-labelledby="coach-modal-title"
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.96, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed left-1/2 top-1/2 z-50 flex w-[calc(100vw-2rem)] max-w-2xl max-h-[90vh] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-primary/10 bg-secondary shadow-2xl"
+            exit={{ opacity: 0, scale: 0.96, y: 16 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            className="fixed left-1/2 top-1/2 z-50 flex max-h-[90vh] w-[calc(100vw-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-primary/10 bg-secondary shadow-2xl"
           >
             <div className="flex shrink-0 items-start justify-between border-b border-primary/10 p-6 md:p-8">
               <div>
-                <h2 id="coach-modal-title" className="font-heading text-3xl text-primary md:text-4xl">{coach.name}</h2>
-                <p style={{ color: coach.color }} className="mt-1 font-medium">{coach.role}</p>
+                <h2 id="coach-modal-title" className="font-heading text-3xl text-primary md:text-4xl">
+                  {coach.name}
+                </h2>
+                <p style={{ color: coach.color }} className="mt-1 font-medium">
+                  {coach.role}
+                </p>
               </div>
               <button
                 ref={closeButtonRef}
@@ -215,14 +227,12 @@ function CoachModal({ coach, isOpen, onClose }) {
             </div>
 
             <div className="flex-1 overflow-y-auto p-6">
-              <div className="flex gap-6">
-                <div className="shrink-0">
-                  <div className="w-36 overflow-hidden rounded-xl sm:w-44">
-                    <CoachImage coach={coach} />
-                  </div>
+              <div className="grid gap-6 md:grid-cols-[11rem_minmax(0,1fr)]">
+                <div className="overflow-hidden rounded-xl">
+                  <CoachImage coach={coach} eager />
                 </div>
 
-                <div className="min-w-0 flex-1 space-y-4">
+                <div className="min-w-0 space-y-4">
                   <div>
                     <h3 className="mb-3 font-heading text-xl text-primary">Sobre el área</h3>
                     <p className="leading-relaxed text-primary/70">{coach.bio}</p>
@@ -267,42 +277,71 @@ function CoachModal({ coach, isOpen, onClose }) {
   )
 }
 
+function CoachCard({ coach, onClick, eager = false }) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileHover={{ y: -4 }}
+      whileTap={{ scale: 0.99 }}
+      transition={{ duration: 0.2 }}
+      className="group overflow-hidden rounded-2xl border border-white/10 bg-white/5 text-left focus:outline-none focus:ring-2 focus:ring-fire-orange"
+    >
+      <div className="relative aspect-[4/5] overflow-hidden">
+        <CoachImage coach={coach} eager={eager} className="transition-transform duration-500 group-hover:scale-[1.03]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+        <div
+          className="absolute inset-x-0 bottom-0 h-24 opacity-80"
+          style={{ background: `linear-gradient(to top, ${coach.color}55, transparent)` }}
+        />
+        <div className="absolute left-4 top-4 rounded-full border border-white/10 bg-black/35 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/75">
+          {coach.metric}
+        </div>
+        <div className="absolute inset-x-0 bottom-0 p-5">
+          <h3 className="font-heading text-3xl leading-none text-white">{coach.name}</h3>
+          <p className="mt-2 text-sm text-white/68">{coach.role}</p>
+        </div>
+      </div>
+
+      <div className="space-y-4 p-5">
+        <div className="flex flex-wrap gap-2">
+          {coach.specialties.map((specialty) => (
+            <span
+              key={specialty}
+              className="rounded-full px-3 py-1 text-xs font-semibold"
+              style={{ backgroundColor: `${coach.color}20`, color: coach.color }}
+            >
+              {specialty}
+            </span>
+          ))}
+        </div>
+
+        <p className="text-sm leading-relaxed text-primary/62">{coach.bio}</p>
+
+        <span className="inline-flex items-center gap-2 text-sm font-semibold" style={{ color: coach.color }}>
+          Ver perfil completo
+          <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
+      </div>
+    </motion.button>
+  )
+}
+
 export default function Coaches() {
-  const [active, setActive] = useState(0)
   const [selectedCoach, setSelectedCoach] = useState(null)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const lastHover = useRef(0)
-
-  const getSlot = (i) => {
-    const diff = ((i - active) + coaches.length) % coaches.length
-    return diff > coaches.length / 2 ? diff - coaches.length : diff
-  }
-
-  const getFlex = (slot) => {
-    if (slot === 0) return 5
-    if (Math.abs(slot) === 1) return 1.2
-    if (Math.abs(slot) === 2) return 0.55
-    return 0
-  }
-
-  const handleHover = (i, isCenter, visible) => {
-    if (isCenter || !visible) return
-    const now = Date.now()
-    if (now - lastHover.current < 420) return
-    lastHover.current = now
-    setActive(i)
-  }
 
   return (
     <section id="profesores" className="relative bg-secondary py-24 lg:py-32 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.45 }}
           className="mb-12 text-center lg:mb-16"
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-fire-orange">
@@ -316,103 +355,21 @@ export default function Coaches() {
           </p>
         </motion.div>
 
-        {/* Peekaboo carousel */}
-        <div className="relative">
-
-          {/* Expanding strips carousel */}
-        <div className="flex h-[520px] gap-2 overflow-hidden rounded-2xl sm:h-[580px] lg:h-[640px]">
-          {coaches.map((coach, i) => {
-            const slot    = getSlot(i)
-            const isCenter = slot === 0
-            const flex    = getFlex(slot)
-            const visible = flex > 0
-
-            return (
-              <div
-                key={coach.id}
-                onClick={() => isCenter && setSelectedCoach(coach)}
-                onMouseEnter={() => handleHover(i, isCenter, visible)}
-                className="relative cursor-pointer overflow-hidden rounded-2xl"
-                style={{
-                  flexGrow: flex,
-                  flexShrink: 1,
-                  flexBasis: 0,
-                  opacity: visible ? 1 : 0,
-                  transition: 'flex-grow 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
-                  minWidth: 0,
-                  pointerEvents: visible ? 'auto' : 'none',
-                }}
-              >
-                {/* Foto */}
-                <div className="h-full w-full">
-                  <CoachImage coach={coach} />
-                </div>
-
-                {/* Overlay oscuro en laterales */}
-                <div
-                  className="absolute inset-0 transition-opacity duration-500"
-                  style={{ backgroundColor: `rgba(0,0,0,${isCenter ? 0 : 0.45})` }}
-                />
-
-                {/* Gradiente base abajo */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
-
-                {/* Glow color centro */}
-                <div
-                  className="absolute inset-0 transition-opacity duration-500"
-                  style={{
-                    background: `linear-gradient(to top, ${coach.color}45 0%, transparent 55%)`,
-                    opacity: isCenter ? 1 : 0,
-                  }}
-                />
-
-                {/* Borde color centro */}
-                <div
-                  className="absolute inset-0 rounded-2xl transition-opacity duration-500"
-                  style={{
-                    boxShadow: `inset 0 0 0 2px ${coach.color}`,
-                    opacity: isCenter ? 1 : 0,
-                  }}
-                />
-
-                {/* Info centro */}
-                <div
-                  className="absolute bottom-0 left-0 right-0 p-6 transition-all duration-500"
-                  style={{ opacity: isCenter ? 1 : 0, transform: isCenter ? 'translateY(0)' : 'translateY(12px)' }}
-                >
-                  <h3 className="font-heading text-3xl text-white lg:text-4xl">{coach.name}</h3>
-                  <p className="mt-1 text-sm text-white/55">{coach.role}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {coach.specialties.map((s) => (
-                      <span key={s} className="rounded-full px-3 py-1 text-xs font-semibold"
-                        style={{ backgroundColor: `${coach.color}30`, color: coach.color }}>
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-fire-orange">
-                    Ver perfil completo
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </p>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-
-        {/* Dots solo — sin flechas */}
-        <div className="mt-5 flex justify-center gap-2">
-          {coaches.map((_, i) => (
-            <button key={i} onClick={() => setActive(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? 'w-8 bg-fire-orange' : 'w-1.5 bg-primary/25 hover:bg-primary/50'}`}
-              aria-label={`Coach ${i + 1}`} />
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.45, delay: 0.1 }}
+          className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4"
+        >
+          {coaches.map((coach, index) => (
+            <CoachCard
+              key={coach.id}
+              coach={coach}
+              eager={index < 2}
+              onClick={() => setSelectedCoach(coach)}
+            />
           ))}
-        </div>
-        </div>
-
-
+        </motion.div>
       </div>
 
       <CoachModal
