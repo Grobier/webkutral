@@ -8,7 +8,10 @@ const navLinks = [
   { name: 'Horarios', href: '#horarios' },
   { name: 'Planes', href: '#planes' },
   { name: 'Contacto', href: '#contacto' },
+  { name: 'Tiendita', href: '/tiendita/' },
 ]
+const isShop = /^\/tiendita(?:\/|$)/.test(window.location.pathname)
+const linkHref = (href) => isShop && href.startsWith('#') ? `/${href}` : href
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -106,7 +109,7 @@ export default function Navbar() {
         <div className="flex h-20 items-center justify-between px-5 sm:px-6">
 
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 shrink-0" aria-label="Ir al inicio">
+          <a href="/" className="flex items-center gap-3 shrink-0" aria-label="Ir al inicio">
             <img
               src="/brand/Logo-escudo.png"
               alt="BoxKutral"
@@ -125,7 +128,8 @@ export default function Navbar() {
               return (
                 <a
                   key={link.name}
-                  href={link.href}
+                  href={linkHref(link.href)}
+                  aria-current={isShop && link.name === 'Tiendita' ? 'page' : undefined}
                   className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 rounded-xl ${
                     isActive
                       ? 'text-white'
@@ -193,7 +197,8 @@ export default function Navbar() {
                   return (
                     <a
                       key={link.name}
-                      href={link.href}
+                      href={linkHref(link.href)}
+                      aria-current={isShop && link.name === 'Tiendita' ? 'page' : undefined}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium uppercase tracking-wide transition-colors ${
                         isActive

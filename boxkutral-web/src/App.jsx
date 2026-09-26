@@ -21,6 +21,9 @@ const Testimonials = lazy(() => import('./components/Testimonials'))
 const FAQ = lazy(() => import('./components/FAQ'))
 const FinalCTA = lazy(() => import('./components/FinalCTA'))
 const Footer = lazy(() => import('./components/Footer'))
+const Shop = lazy(() => import('./components/Shop'))
+const CollectionPopup = lazy(() => import('./components/CollectionPopup'))
+const isShop = /^\/tiendita(?:\/|$)/.test(window.location.pathname)
 
 function SectionFallback() {
   return <div className="min-h-96 bg-secondary" aria-hidden="true" />
@@ -42,6 +45,7 @@ function App() {
 
       {/* Main Content */}
       <main id="main-content">
+        {isShop ? <Suspense fallback={<SectionFallback />}><Shop /></Suspense> : <>
         {/* Hero Section - Fullscreen with ember particles */}
         <Hero />
 
@@ -84,6 +88,7 @@ function App() {
         <Suspense fallback={<SectionFallback />}>
           <FinalCTA />
         </Suspense>
+        </>}
       </main>
 
       {/* Footer */}
@@ -92,7 +97,8 @@ function App() {
       </Suspense>
 
       {/* Floating WhatsApp CTA */}
-      <FloatingWhatsApp />
+      {!isShop && <FloatingWhatsApp />}
+      {!isShop && <Suspense fallback={null}><CollectionPopup /></Suspense>}
     </div>
   )
 }

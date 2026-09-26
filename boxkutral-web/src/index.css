@@ -1,5 +1,40 @@
 @import "tailwindcss";
 
+.cart-photon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 60;
+  background: radial-gradient(circle, #fff 0%, #fff4cc 25%, #ffb300 50%, #ff6b00 75%);
+  box-shadow: 0 0 10px 3px #ffb300, 0 0 28px 7px #ff6b0099;
+}
+@keyframes cart-impact {
+  from { transform: scale(0.5); opacity: 1; }
+  to { transform: scale(2.7); opacity: 0; }
+}
+.cart-impact-ring {
+  position: absolute;
+  inset: -4px;
+  border: 2px solid #ff8a00;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: cart-impact 500ms ease-out forwards;
+}
+@keyframes cart-added-bounce {
+  0%, 100% { transform: scale(1) rotate(0); }
+  30% { transform: scale(1.35) rotate(-12deg); }
+  60% { transform: scale(1.15) rotate(10deg); }
+}
+.cart-added-bounce { animation: cart-added-bounce 600ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .cart-added-bounce { animation: none; }
+  .cart-photon, .cart-impact-ring { display: none; }
+}
+
 /* ========================================
    BoxKutral - Centro de Entrenamiento
    Theme Configuration

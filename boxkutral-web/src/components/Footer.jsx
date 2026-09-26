@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4 lg:col-span-2">
-            <a href="#main-content" className="inline-flex" aria-label="Ir al contenido principal">
+            <a href="/" className="inline-flex" aria-label="Ir al inicio">
               <img
                 src="/brand/Kutral Espalda.png"
                 alt="BoxKutral"
@@ -47,7 +47,7 @@ export default function Footer() {
               {disciplines.map((discipline) => (
                 <li key={discipline}>
                   <a
-                    href="#disciplinas"
+                    href="/#disciplinas"
                     className="text-sm text-primary/50 transition-colors hover:text-fire-orange"
                   >
                     {discipline}
@@ -95,18 +95,19 @@ export default function Footer() {
             © {new Date().getFullYear()} BoxKutral. Centro de Entrenamiento de Alto Rendimiento. Santiago, Chile.
           </p>
           <div className="flex items-center gap-6 text-xs text-primary/30">
-            <a href="#disciplinas" className="transition-colors hover:text-fire-orange">
+            <a href="/#disciplinas" className="transition-colors hover:text-fire-orange">
               Disciplinas
             </a>
-            <a href="#profesores" className="transition-colors hover:text-fire-orange">
+            <a href="/#profesores" className="transition-colors hover:text-fire-orange">
               Coaches
             </a>
-            <a href="#horarios" className="transition-colors hover:text-fire-orange">
+            <a href="/#horarios" className="transition-colors hover:text-fire-orange">
               Horarios
             </a>
-            <a href="#planes" className="transition-colors hover:text-fire-orange">
+            <a href="/#planes" className="transition-colors hover:text-fire-orange">
               Planes
             </a>
+            <a href="/tiendita/" className="transition-colors hover:text-fire-orange">Tiendita</a>
           </div>
         </div>
       </div>
