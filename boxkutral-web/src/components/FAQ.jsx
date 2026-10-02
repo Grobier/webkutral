@@ -17,7 +17,7 @@ const faqs = [
   {
     question: '¿Qué disciplinas ofrece BoxKutral?',
     answer:
-      'Trabajamos CrossFit, Halterofilia, Powerbuilding, GAP 2.0 y Endurance. Además contamos con servicios complementarios de kinesiología deportiva y nutrición deportiva.',
+      'Trabajamos CrossFit, Halterofilia, Powerbuilding, GAP 2.0 y HYBRID. Además contamos con servicios complementarios de kinesiología deportiva y nutrición deportiva.',
   },
   {
     question: '¿Cuáles son los horarios del box?',

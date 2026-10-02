@@ -3,7 +3,7 @@
  * Landing Page - Santiago, Chile
  *
  * High performance training center with fire brand identity
- * Disciplines: Crossfit, Halterofilia, Powerbuilding, GAP 2.0, Endurance
+ * Disciplines: Crossfit, Halterofilia, Powerbuilding, GAP 2.0, HYBRID
  */
 
 import { lazy, Suspense } from 'react'

@@ -65,7 +65,7 @@ export default function Hero() {
             {...fade(0.2)}
             className="text-base font-medium tracking-widest text-fire-orange sm:text-lg"
           >
-            Powerbuilding · Halterofilia · CrossFit · Endurance · GAP
+            Powerbuilding · Halterofilia · CrossFit · HYBRID · GAP
           </motion.p>
 
           {/* Subtitle */}

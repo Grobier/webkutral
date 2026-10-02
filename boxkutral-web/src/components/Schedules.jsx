@@ -8,7 +8,7 @@ const disciplines = [
   { id: 'crossfit', name: 'CrossFit', color: '#FF6B00' },
   { id: 'halterofilia', name: 'Halterofilia', color: '#F0B400' },
   { id: 'gap', name: 'GAP 2.0', color: '#2ECC71' },
-  { id: 'endurance', name: 'Endurance', color: '#00BCD4' },
+  { id: 'hybrid', name: 'HYBRID', color: '#00BCD4' },
   { id: 'powerbuilding', name: 'Powerbuilding', color: '#9B59B6' },
   { id: 'openbox', name: 'Open Box', color: '#FACC15' },
 ]
@@ -73,7 +73,7 @@ const scheduleData = {
       '21:00': [false, false, false, false, false, false],
     },
   },
-  endurance: {
+  hybrid: {
     am: {
       '6:00': [false, false, false, false, false, false],
       '7:00': [false, false, false, false, false, false],
@@ -86,7 +86,7 @@ const scheduleData = {
     pm: {
       '17:00': [false, false, false, false, false, false],
       '18:00': [false, false, true, false, true, false],
-      '19:00': [false, false, false, false, false, false],
+      '19:00': [false, false, true, false, true, false],
       '20:00': [false, false, false, false, false, false],
       '21:00': [false, false, false, false, false, false],
     },

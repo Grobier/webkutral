@@ -1,6 +1,6 @@
 import { WHATSAPP_LINK, INSTAGRAM_LINK, PHONE_DISPLAY } from '../constants'
 
-const disciplines = ['CrossFit', 'Halterofilia', 'Powerbuilding', 'GAP 2.0', 'Endurance']
+const disciplines = ['CrossFit', 'Halterofilia', 'Powerbuilding', 'GAP 2.0', 'HYBRID']
 
 export default function Footer() {
   return (

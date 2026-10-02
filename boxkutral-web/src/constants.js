@@ -24,7 +24,7 @@ export const DISCIPLINE_COLORS = {
   halterofilia: '#F0B400',
   powerbuilding: '#9B59B6',
   gap: '#2ECC71',
-  endurance: '#00BCD4',
+  hybrid: '#00BCD4',
 }
 
 // ==============================================
